@@ -1,4 +1,4 @@
-```json
+
 {
   "name": "field-elevate-hub",
   "version": "1.0.0",
@@ -17,4 +17,4 @@
     "node": ">=18.0.0"
   }
 }
-```
+
