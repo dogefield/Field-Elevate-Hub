@@ -1,54 +1,55 @@
-# Field Elevate Hub using Railways to build 
-
-AI-powered hedge fund trading platform with multi-agent orchestration.
+# Field Elevate Hub - Week 1 & 2 Implementation
 
 ## Overview
-
-Field Elevate is a next-generation trading platform that combines:
-- Model Context Protocol (MCP) for AI orchestration
-- Multi-agent trading strategies
-- Real-time risk management
-- Automated portfolio optimization
+This is the complete implementation of the Field Elevate AI-native hedge fund system, including:
+- MCP Hub for connecting all services
+- AI COO with multi-agent orchestration
+- Real-time state management with Redis
+- GPT-4.1 integration with 1M token context
+- Comprehensive monitoring and reporting
 
 ## Quick Start
 
+1. **Setup Infrastructure**
 ```bash
+cd field-elevate-hub
+./scripts/setup.sh
+```
+
+1. **Configure Environment**
+
+```bash
+cp .env.example .env
+# Edit .env with your API keys and URLs
+```
+
+1. **Start Services**
+
+```bash
+# Terminal 1: Start Docker services
+docker-compose up -d
+
+# Terminal 2: Start MCP Hub
+cd mcp-hub
 npm install
-npm start
+npm run dev
+
+# Terminal 3: Start AI COO
+cd ai-coo
+npm install
+npm run dev
 ```
 
-## Architecture
-
-- **MCP Hub**: Central message broker
-- **Data Hub**: Market data ingestion
-- **Signal Forge**: Strategy generation
-- **Trade Runner**: Order execution
-- **Risk Analyzer**: Portfolio risk management
-- **AI COO**: Autonomous operations
-
-## Deployment
-
-This project is designed to run on Railway with PostgreSQL and Redis.
-
-## License
-
-Proprietary - Field Elevate Management
+## System Architecture
 
 ```
-## Steps to add this:
-
-### If you see "Add a README" button:
-1. **Tap it**
-2. **Paste the content above**
-3. **Scroll down and tap "Commit new file"**
-
-### If you don't see that option:
-1. **Open Safari/Chrome on your phone**
-2. **Go to:** `github.com/dogefield/Field-Elevate-Hub`
-3. **You'll see "Quick setup" with options**
-4. **Click "creating a new file"**
-5. **Name it:** `README.md`
-6. **Paste the content**
-7. **Click "Commit new file"**
--Elevate-Hub
-Field Elevate AI Trading Platform
+┌─────────────────────────────────────────────────────┐
+│                    AI COO                            │
+│  ┌─────────────┐ ┌─────────────┐ ┌─────────────┐   │
+│  │  Strategy   │ │    Risk     │ │   Report    │   │
+│  │   Ranker    │ │  Monitor    │ │ Generator   │   │
+│  └─────────────┘ └─────────────┘ └─────────────┘   │
+└─────────────────────┬───────────────────────────────┘
+                     │
+┌─────────────────────┴───────────────────────────
+```
