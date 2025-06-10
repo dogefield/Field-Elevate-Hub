@@ -91,6 +91,9 @@ npm run dev
 # Unit tests
 npm test
 
+# Test with coverage (JUnit report in coverage/junit.xml)
+npm run test:coverage
+
 # Integration tests
 npm run test:integration
 
@@ -100,6 +103,10 @@ npm run test:system
 # All tests
 npm run test:all
 ```
+
+After running `npm run test:coverage`, open `coverage/lcov-report/index.html` in
+your browser to inspect code coverage details. The JUnit-formatted results are
+available at `coverage/junit.xml` for CI integration.
 
 ### Deployment
 
