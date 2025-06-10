@@ -277,8 +277,12 @@ app.get('/api/signals', async (req, res) => {
   });
 });
 
-// Start server
-app.listen(PORT, async () => {
-  console.log(`🚀 Field Elevate API running on port ${PORT}`);
-  await initDB();
-});
+// Start server if run directly
+if (require.main === module) {
+  app.listen(PORT, async () => {
+    console.log(`🚀 Field Elevate API running on port ${PORT}`);
+    await initDB();
+  });
+}
+
+module.exports = { app, initDB, sequelize };
