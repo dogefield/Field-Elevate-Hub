@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 const { Sequelize, DataTypes } = require('sequelize');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -276,6 +277,15 @@ app.get('/api/signals', async (req, res) => {
     ]
   });
 });
+
+// Serve React frontend if built
+const frontendPath = path.join(__dirname, 'frontend', 'build');
+if (require('fs').existsSync(frontendPath)) {
+  app.use(express.static(frontendPath));
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(frontendPath, 'index.html'));
+  });
+}
 
 // Start server if run directly
 if (require.main === module) {
