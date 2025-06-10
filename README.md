@@ -26,6 +26,22 @@ Field Elevate is a next-generation hedge fund platform that combines artificial 
 │  └─────────────┘  │  └─────────────┘                  │
 └────────────────────┴────────────────────────────────────┘
 ```
+
+### Front-End Layout
+
+```
+┌──────────────────────────────┐
+│       Portfolio Overview      │
+├───────────────┬──────────────┤
+│ Strategy Anal │ Risk Mgmt    │
+├───────────────┴──────────────┤
+│      AI Insights & Bar        │
+├───────────────┬──────────────┬──────────────┐
+│ Investor Prtl │ Ops Console  │ Advanced ML  │
+└───────────────┴──────────────┴──────────────┘
+│     Quick Settings            │
+└──────────────────────────────┘
+```
 ## Key Features
 
 ### 1. AI-Driven Strategy Development
@@ -117,6 +133,15 @@ npm run deploy:production
 # Staging deployment
 npm run deploy:staging
 ```
+
+#### Railway
+
+To deploy the combined Node.js and React application on [Railway](https://railway.app):
+
+1. Create a new Railway project and add a PostgreSQL plugin.
+2. Set environment variables (`DATABASE_URL`, `JWT_SECRET` and any API keys) in the project settings.
+3. The default `start` command runs `node server.js` and serves the React build from `/frontend/build`.
+4. Railway will run `npm run heroku-postbuild` after dependencies are installed, building the React app automatically.
 
 ## API Documentation
 

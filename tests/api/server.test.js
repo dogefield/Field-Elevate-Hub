@@ -28,4 +28,9 @@ describe('API Endpoints', () => {
     expect(res.body).toHaveProperty('markets');
     expect(Array.isArray(res.body.markets)).toBe(true);
   });
+
+  test('GET unknown path returns 404 when frontend not built', async () => {
+    const res = await request(app).get('/nonexistent/path');
+    expect(res.statusCode).toBe(404);
+  });
 });
