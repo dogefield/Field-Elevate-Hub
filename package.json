@@ -6,7 +6,10 @@
     "start": "node server.js",
     "test": "jest",
     "test:coverage": "jest --coverage",
-    "heroku-postbuild": "cd frontend && npm install && npm run build"
+    "heroku-postbuild": "cd frontend && npm install && npm run build",
+    "test:integration": "jest tests/integration",
+    "test:system": "jest tests/system",
+    "test:all": "npm run test && npm run test:integration && npm run test:system"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
