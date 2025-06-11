@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const fs = require('fs');
 const { Sequelize, DataTypes } = require('sequelize');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -14,7 +15,14 @@ app.use(cors());
 app.use(express.json());
 
 // Serve React frontend
-app.use(express.static(path.join(__dirname, 'frontend/build')));
+const buildPath = path.join(__dirname, 'frontend', 'build');
+const indexHtml = path.join(buildPath, 'index.html');
+
+if (!fs.existsSync(indexHtml)) {
+  console.warn('\u26A0\uFE0F  Frontend build not found. Run "cd frontend && npm install && npm run build" to generate the React bundle.');
+}
+
+app.use(express.static(buildPath));
 
 
 // Database connection (Railway provides DATABASE_URL automatically when you add PostgreSQL)
@@ -289,7 +297,11 @@ app.all('/api/*', (req, res) => {
 
 // Catch-all to serve React UI
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'frontend/build', 'index.html'));
+  if (fs.existsSync(indexHtml)) {
+    res.sendFile(indexHtml);
+  } else {
+    res.status(404).send('Frontend build missing. Please run "cd frontend && npm install && npm run build".');
+  }
 });
 
 // Start server if run directly
