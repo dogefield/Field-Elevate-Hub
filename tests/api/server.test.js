@@ -1,4 +1,6 @@
 const request = require('supertest');
+const fs = require('fs');
+const path = require('path');
 const { app } = require('../../server');
 
 describe('API Endpoints', () => {
@@ -29,8 +31,15 @@ describe('API Endpoints', () => {
     expect(Array.isArray(res.body.markets)).toBe(true);
   });
 
-  test('GET unknown path returns 404 when frontend not built', async () => {
+  test('GET unknown path handles frontend build appropriately', async () => {
     const res = await request(app).get('/nonexistent/path');
-    expect(res.statusCode).toBe(404);
+
+    const buildPath = path.join(__dirname, '../../frontend', 'build');
+    if (fs.existsSync(buildPath)) {
+      expect(res.statusCode).toBe(200);
+      expect(res.headers['content-type']).toMatch(/html/);
+    } else {
+      expect(res.statusCode).toBe(404);
+    }
   });
 });
