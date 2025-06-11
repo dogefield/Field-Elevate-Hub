@@ -19,7 +19,10 @@ const buildPath = path.join(__dirname, 'frontend', 'build');
 const indexHtml = path.join(buildPath, 'index.html');
 
 if (!fs.existsSync(indexHtml)) {
-  console.warn('\u26A0\uFE0F  Frontend build not found. Run "cd frontend && npm install && npm run build" to generate the React bundle.');
+  console.warn(
+    '⚠️  Frontend build not found. Run "npm install && cd frontend && npm install && npm run build" to generate the React bundle. ' +
+    'If this appears in Railway logs, make sure the build command is correctly configured.'
+  );
 }
 
 app.use(express.static(buildPath));

@@ -140,14 +140,20 @@ To deploy the combined Node.js and React application on [Railway](https://railwa
 
 1. Create a new Railway project and add a PostgreSQL plugin.
 2. Set environment variables (`DATABASE_URL`, `JWT_SECRET` and any API keys) in the project settings.
-3. The default `start` command runs `node server.js` and serves the React build from `/frontend/build`.
-4. Railway should run `npm run heroku-postbuild` after dependencies are installed, building the React app automatically. If this does not happen, set the build command in the project settings to:
+3. The default `start` command runs:
 
    ```bash
-   cd frontend && npm install && npm run build
+   node server.js
    ```
 
-   Check the Railway build logs to confirm the React bundle is generated under `frontend/build`.
+   Express serves the React build from `/frontend/build`.
+4. Ensure the build command installs dependencies and builds the React app:
+
+   ```bash
+   npm install && cd frontend && npm install && npm run build
+   ```
+
+   If the build fails (for example due to missing dependencies), the logs will display the error along with troubleshooting steps. Confirm the Railway build logs show `frontend/build` was created successfully.
 
 ## API Documentation
 
