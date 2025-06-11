@@ -13,6 +13,10 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
+// Serve React frontend
+app.use(express.static(path.join(__dirname, 'frontend/build')));
+
+
 // Database connection (Railway provides DATABASE_URL automatically when you add PostgreSQL)
 const sequelize = process.env.DATABASE_URL 
   ? new Sequelize(process.env.DATABASE_URL, {
@@ -278,14 +282,15 @@ app.get('/api/signals', async (req, res) => {
   });
 });
 
-// Serve React frontend if built
-const frontendPath = path.join(__dirname, 'frontend', 'build');
-if (require('fs').existsSync(frontendPath)) {
-  app.use(express.static(frontendPath));
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(frontendPath, 'index.html'));
-  });
-}
+// Placeholder for future API routes
+app.all('/api/*', (req, res) => {
+  res.json({ error: 'Coming Soon' });
+});
+
+// Catch-all to serve React UI
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'frontend/build', 'index.html'));
+});
 
 // Start server if run directly
 if (require.main === module) {
