@@ -1,0 +1,34 @@
+services:
+  # MCP Hub - The main orchestrator
+  - type: web
+    name: fieldelevate-mcp-hub
+    env: node
+    buildCommand: cd mcp-hub && npm install
+    startCommand: cd mcp-hub && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - fromGroup: field-elevate-shared
+    
+  # Data Hub Service
+  - type: web
+    name: fieldelevate-data-hub
+    env: node
+    buildCommand: cd data-hub && npm install
+    startCommand: cd data-hub && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - fromGroup: field-elevate-shared
+
+  # AI COO Service
+  - type: web
+    name: fieldelevate-ai-coo
+    env: node
+    buildCommand: cd ai-coo && npm install
+    startCommand: cd ai-coo && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - fromGroup: field-elevate-shared
+      
