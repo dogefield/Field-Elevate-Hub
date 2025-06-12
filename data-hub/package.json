@@ -1,0 +1,14 @@
+{
+  "name": "@field-elevate/data-hub",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "fastify": "^4.26.2",
+    "axios": "^1.6.7",
+    "redis": "^4.6.13"
+  }
+}
