@@ -1,0 +1,74 @@
+{
+  "dashboard": {
+    "title": "Field Elevate System Dashboard",
+    "panels": [
+      {
+        "title": "System Health Overview",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "up{job='field-elevate'}",
+            "legendFormat": "{{instance}}"
+          }
+        ],
+        "gridPos": { "x": 0, "y": 0, "w": 24, "h": 4 }
+      },
+      {
+        "title": "Strategy Performance",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "strategy_performance_total_return",
+            "legendFormat": "{{strategy_name}}"
+          }
+        ],
+        "gridPos": { "x": 0, "y": 4, "w": 12, "h": 8 }
+      },
+      {
+        "title": "Portfolio Risk Metrics",
+        "type": "gauge",
+        "targets": [
+          {
+            "expr": "portfolio_var_95",
+            "legendFormat": "VaR 95%"
+          }
+        ],
+        "gridPos": { "x": 12, "y": 4, "w": 12, "h": 8 }
+      },
+      {
+        "title": "Trade Execution Metrics",
+        "type": "table",
+        "targets": [
+          {
+            "expr": "trades_executed_total",
+            "format": "table",
+            "instant": true
+          }
+        ],
+        "gridPos": { "x": 0, "y": 12, "w": 12, "h": 8 }
+      },
+      {
+        "title": "AI Agent Activity",
+        "type": "heatmap",
+        "targets": [
+          {
+            "expr": "agent_actions_total",
+            "legendFormat": "{{agent_id}}"
+          }
+        ],
+        "gridPos": { "x": 12, "y": 12, "w": 12, "h": 8 }
+      },
+      {
+        "title": "System Alerts",
+        "type": "alert",
+        "targets": [
+          {
+            "expr": "ALERTS{alertstate='firing'}",
+            "legendFormat": "{{alertname}}"
+          }
+        ],
+        "gridPos": { "x": 0, "y": 20, "w": 24, "h": 6 }
+      }
+    ]
+  }
+}

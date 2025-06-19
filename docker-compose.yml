@@ -1,97 +1,65 @@
 version: '3.8'
 
 services:
-  # PostgreSQL Database
-  postgres:
-    image: postgres:15-alpine
-    environment:
-      POSTGRES_USER: fieldelevate
-      POSTGRES_PASSWORD: fieldelevate123
-      POSTGRES_DB: fieldelevate
-    ports:
-      - "5433:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U fieldelevate"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
-  # Redis Cache
   redis:
     image: redis:7-alpine
+    container_name: field-elevate-redis
     ports:
-      - "6380:6379"
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    command: redis-server --appendonly yes --appendfsync everysec
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
-      interval: 10s
-      timeout: 5s
+      interval: 5s
+      timeout: 3s
       retries: 5
 
-  # MCP Hub Service
-  mcp-hub:
-    build:
-      context: ./mcp-hub
-      dockerfile: Dockerfile
-    ports:
-      - "3001:3000"
+  postgres:
+    image: postgres:15-alpine
+    container_name: field-elevate-postgres
     environment:
-      NODE_ENV: development
-      PORT: 3000
-      DATABASE_URL: postgresql://fieldelevate:fieldelevate123@postgres:5432/fieldelevate
-      REDIS_URL: redis://redis:6379
-    depends_on:
-      postgres:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
+      POSTGRES_USER: ${POSTGRES_USER:-fieldelevate}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-fieldelevate123}
+      POSTGRES_DB: ${POSTGRES_DB:-fieldelevate}
+    ports:
+      - "5432:5432"
     volumes:
-      - ./mcp-hub:/app
-      - /app/node_modules
+      - postgres-data:/var/lib/postgresql/data
+      - ./init-scripts:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-fieldelevate}"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
 
-  # Data Hub Service
-  data-hub:
-    build:
-      context: ./data-hub
-      dockerfile: Dockerfile
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: field-elevate-prometheus
     ports:
-      - "3002:3000"
-    environment:
-      NODE_ENV: development
-      PORT: 3000
-      REDIS_URL: redis://redis:6379
-      MCP_HUB_URL: http://mcp-hub:3000
-    depends_on:
-      redis:
-        condition: service_healthy
-      mcp-hub:
-        condition: service_started
+      - "9090:9090"
     volumes:
-      - ./data-hub:/app
-      - /app/node_modules
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus-data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
 
-  # AI COO Service
-  ai-coo:
-    build:
-      context: ./ai-coo
-      dockerfile: Dockerfile
+  grafana:
+    image: grafana/grafana:latest
+    container_name: field-elevate-grafana
     ports:
-      - "3003:3000"
+      - "3000:3000"
     environment:
-      NODE_ENV: development
-      PORT: 3000
-      REDIS_URL: redis://redis:6379
-      MCP_HUB_URL: http://mcp-hub:3000
-      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
-    depends_on:
-      redis:
-        condition: service_healthy
-      mcp-hub:
-        condition: service_started
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD:-admin}
+      - GF_USERS_ALLOW_SIGN_UP=false
     volumes:
-      - ./ai-coo:/app
-      - /app/node_modules
+      - grafana-data:/var/lib/grafana
+      - ./grafana/dashboards:/etc/grafana/provisioning/dashboards
+      - ./grafana/datasources:/etc/grafana/provisioning/datasources
 
 volumes:
-  postgres_data: 
+  redis-data:
+  postgres-data:
+  prometheus-data:
+  grafana-data:

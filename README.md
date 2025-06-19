@@ -1,115 +1,203 @@
-Field Elevate - AI-Powered Trading Platform
-🚀 Overview
-Field Elevate is an enterprise-grade algorithmic trading platform that uses adversarial AI to validate every trade before execution. Unlike traditional black-box trading systems, Field Elevate provides complete transparency through its unique debate-based validation system.
-🏗️ Architecture
-┌─────────────────────────────────────────────────────────────┐
-│                        API GATEWAY                           │
-└─────────────────────────┬───────────────────────────────────┘
-                          │
-┌─────────────────────────┴───────────────────────────────────┐
-│                     EVENT BUS (Redis)                        │
-└──┬──────┬────────┬────────┬────────┬────────┬────────┬────┘
-   │      │        │        │        │        │        │
-┌────┐  ┌────┐  ┌────┐  ┌────┐  ┌────┐  ┌────┐  ┌────┐
-│MCP │  │Data│  │AI  │  │Auth│  │Trade│  │Exec│  │Coin│
-│Hub │  │Hub │  │COO │  │Guard│ │Valid│  │Gate│  │LLM │
-└────┘  └────┘  └────┘  └────┘  └────┘  └────┘  └────┘
-🎯 Key Features
-Trade Validation Command Center
-Every trade goes through a rigorous debate process:
+# Field Elevate - AI-Powered Hedge Fund Platform
 
-Proposer AI: Advocates for the trade
-Risk Guardian AI: Challenges and finds risks
-Validator AI: Makes balanced decision
+## Overview
 
-Real-Time Parameter Override
+Field Elevate is a next-generation hedge fund platform that combines artificial intelligence, automated trading, and sophisticated risk management to deliver superior returns while maintaining institutional-grade security and compliance.
 
-Modify any trade parameter with proper authentication
-Three-tier access control (Operator/Risk Manager/Admin)
-Complete audit trail of all modifications
+## Architecture
+```
+┌─────────────────────────────────────────────────────────┐
+│                    MCP Hub (Orchestrator)                │
+└─────────────────────┬───────────────────────────────────┘
+│
+┌────────────────────┼────────────────────────────────────┐
+│                    │                                     │
+│  ┌─────────────┐  │  ┌─────────────┐  ┌─────────────┐ │
+│  │  Data Hub   │  │  │Signal Forge │  │Trade Runner │ │
+│  └─────────────┘  │  └─────────────┘  └─────────────┘ │
+│                    │                                     │
+│  ┌─────────────┐  │  ┌─────────────┐  ┌─────────────┐ │
+│  │Risk Analyzer│  │  │Investor     │  │Bot Concierge│ │
+│  └─────────────┘  │  │Portal       │  └─────────────┘ │
+│                    │  └─────────────┘                   │
+│                    │                                     │
+│  ┌─────────────┐  │  ┌─────────────┐                  │
+│  │  AI COO     │  │  │ Ops Console │                  │
+│  └─────────────┘  │  └─────────────┘                  │
+└────────────────────┴────────────────────────────────────┘
+```
 
-Advanced Risk Management
+### Front-End Layout
 
-Portfolio-level risk controls
-Dynamic position sizing
-Circuit breakers and emergency stops
-Correlation-based risk assessment
+```
+┌──────────────────────────────┐
+│       Portfolio Overview      │
+├───────────────┬──────────────┤
+│ Strategy Anal │ Risk Mgmt    │
+├───────────────┴──────────────┤
+│      AI Insights & Bar        │
+├───────────────┬──────────────┬──────────────┐
+│ Investor Prtl │ Ops Console  │ Advanced ML  │
+└───────────────┴──────────────┴──────────────┘
+│     Quick Settings            │
+└──────────────────────────────┘
+```
+## Key Features
 
-🛠️ Tech Stack
+### 1. AI-Driven Strategy Development
+- Automated strategy discovery and optimization
+- Machine learning-based parameter tuning
+- Real-time strategy performance monitoring
 
-Runtime: Node.js 18+ with TypeScript
-Databases: PostgreSQL 15+, Redis 7+
-AI Models: Claude 4 Opus, GPT-4.1
-Message Queue: BullMQ
-Monitoring: Prometheus + Grafana
-Deployment: Render.com
+### 2. Intelligent Risk Management
+- Real-time VaR calculations
+- Correlation monitoring
+- Automatic position sizing
+- Emergency response protocols
 
-📦 Services
-ServicePurposeStatusMCP HubCentral orchestrator✅ DeployedData HubMarket data ingestion✅ DeployedAI COOStrategy coordination✅ DeployedAuth GuardianAuthentication & authorization🚧 BuildingTrade ValidationDebate-based validation🚧 BuildingExecution GatewayTrade execution📋 PlannedCOIN_LLMExchange integration📋 Planned
-🚀 Getting Started
-Prerequisites
-bash# Install Node.js 18+
-# Install Docker & Docker Compose
-# Clone the repository
-git clone https://github.com/dogefield/field-elevate-platform.git
-cd field-elevate-platform
-Local Development
-bash# Install dependencies
+### 3. Automated Execution
+- Smart order routing
+- Slippage minimization
+- Multi-exchange support
+
+### 4. Comprehensive Reporting
+- Real-time dashboards
+- Automated investor reports
+- Regulatory compliance documentation
+
+## Getting Started
+
+### Prerequisites
+- Node.js 18+
+- Docker & Docker Compose
+- PostgreSQL 15+
+- Redis 7+
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/fieldelevate/platform.git
+cd platform
+```
+
+1. Install dependencies:
+
+```bash
 npm install
+npm run install:all
+```
 
-# Set up environment
+1. Configure environment:
+
+```bash
 cp .env.example .env
-# Edit .env with your values
+# Edit .env with your configuration
+```
 
-# Start services
-docker-compose up -d
+1. Start development environment:
+
+```bash
 npm run dev
-Deployment
-bash# Deploy to Render
-git push origin main
-# Render will auto-deploy via render.yaml
-🔒 Security
+```
 
-Multi-factor authentication
-Hardware key support for admin actions
-Encrypted communication between services
-Comprehensive audit logging
-Rate limiting and DDoS protection
+### Running Tests
 
-📊 Performance Targets
-
-Win rate: 65%+ (vs current 52%)
-Sharpe ratio: 2.5+ (vs current 1.8)
-Max drawdown: <15%
-Response time: <100ms for trade decisions
-
-🧪 Testing
-bash# Unit tests
+```bash
+# Unit tests
 npm test
+
+# Test with coverage (JUnit report in coverage/junit.xml)
+npm run test:coverage
 
 # Integration tests
 npm run test:integration
 
-# Load tests
-npm run test:load
+# System tests
+npm run test:system
 
-# Security audit
-npm run audit
-📝 Documentation
+# All tests
+npm run test:all
+```
 
-Architecture Guide
-API Reference
-Deployment Guide
-Security Policies
+After running `npm run test:coverage`, open `coverage/lcov-report/index.html` in
+your browser to inspect code coverage details. The JUnit-formatted results are
+available at `coverage/junit.xml` for CI integration.
 
-🤝 Contributing
-This is a private project. For access, contact the repository owner.
-📄 License
-Proprietary - All Rights Reserved
-🆘 Support
-For urgent issues:
+### Deployment
 
-Trading emergencies: Use the Big Red Button in Ops Console
-System issues: Check #alerts Slack channel
-General support: support@fieldelevate.com
+```bash
+# Production deployment
+npm run deploy:production
 
+# Staging deployment
+npm run deploy:staging
+```
+
+#### Railway
+
+To deploy the combined Node.js and React application on [Railway](https://railway.app):
+
+1. Create a new Railway project and add a PostgreSQL plugin.
+2. Set environment variables (`DATABASE_URL`, `JWT_SECRET` and any API keys) in the project settings.
+3. The default `start` command runs:
+
+   ```bash
+   node server.js
+   ```
+
+   Express serves the React build from `/frontend/build`.
+4. Ensure the build command installs dependencies and builds the React app:
+
+   ```bash
+   npm install && cd frontend && npm install && npm run build
+   ```
+
+   If the build fails (for example due to missing dependencies), the logs will display the error along with troubleshooting steps. Confirm the Railway build logs show `frontend/build` was created successfully.
+
+## API Documentation
+
+API documentation is available at:
+
+- Development: http://localhost:8000/docs
+- Production: https://api.fieldelevate.com/docs
+
+## Security
+
+Field Elevate implements multiple layers of security:
+
+- End-to-end encryption
+- Multi-factor authentication
+- Role-based access control
+- Audit logging
+- Automated security scanning
+
+## Performance
+
+The platform is designed for high performance:
+
+- Sub-millisecond order execution
+- 99.99% uptime SLA
+- Horizontal scaling capability
+- Real-time data processing
+
+## Contributing
+
+Please read <CONTRIBUTING.md> for details on our code of conduct and the process for submitting pull requests.
+
+## License
+
+This project is proprietary and confidential. See <LICENSE> for details.
+
+## Support
+
+For support, email support@fieldelevate.com or visit our documentation portal.
+
+## Acknowledgments
+
+Built with cutting-edge technologies:
+
+- Model Context Protocol (MCP) by Anthropic
+- TensorFlow.js for ML capabilities
+- React for user interfaces
+- Node.js for backend services

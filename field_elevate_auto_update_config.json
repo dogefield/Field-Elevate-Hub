@@ -1,0 +1,10 @@
+{
+  "enabled": true,
+  "check_interval": 1800,
+  "auto_restart": false,
+  "notify_on_update": true,
+  "backup_before_update": true,
+  "last_update": null,
+  "update_count": 0,
+  "project_name": "Field-Elevate-Hub"
+} 
