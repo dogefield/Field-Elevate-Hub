@@ -1,0 +1,97 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: fieldelevate
+      POSTGRES_PASSWORD: fieldelevate123
+      POSTGRES_DB: fieldelevate
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U fieldelevate"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6380:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # MCP Hub Service
+  mcp-hub:
+    build:
+      context: ./mcp-hub
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3000"
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+      DATABASE_URL: postgresql://fieldelevate:fieldelevate123@postgres:5432/fieldelevate
+      REDIS_URL: redis://redis:6379
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./mcp-hub:/app
+      - /app/node_modules
+
+  # Data Hub Service
+  data-hub:
+    build:
+      context: ./data-hub
+      dockerfile: Dockerfile
+    ports:
+      - "3002:3000"
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+      REDIS_URL: redis://redis:6379
+      MCP_HUB_URL: http://mcp-hub:3000
+    depends_on:
+      redis:
+        condition: service_healthy
+      mcp-hub:
+        condition: service_started
+    volumes:
+      - ./data-hub:/app
+      - /app/node_modules
+
+  # AI COO Service
+  ai-coo:
+    build:
+      context: ./ai-coo
+      dockerfile: Dockerfile
+    ports:
+      - "3003:3000"
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+      REDIS_URL: redis://redis:6379
+      MCP_HUB_URL: http://mcp-hub:3000
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+    depends_on:
+      redis:
+        condition: service_healthy
+      mcp-hub:
+        condition: service_started
+    volumes:
+      - ./ai-coo:/app
+      - /app/node_modules
+
+volumes:
+  postgres_data: 

@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Field Elevate - Trading Platform Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #0a0e27;
+            color: #e4e4e7;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: #94a3b8;
+            font-size: 1.1rem;
+        }
+
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 2rem;
+        }
+
+        .status-card {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .status-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .status-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .status-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .status-online {
+            background: #10b981;
+            color: white;
+        }
+
+        .status-offline {
+            background: #ef4444;
+            color: white;
+        }
+
+        .status-pending {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .metric {
+            background: #0f172a;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid #1e293b;
+        }
+
+        .metric-label {
+            color: #64748b;
+            font-size: 0.875rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #3b82f6;
+        }
+
+        .actions {
+            margin-top: 2rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            border: none;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2563eb;
+        }
+
+        .btn-secondary {
+            background: #475569;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #334155;
+        }
+
+        .logs-section {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .logs-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .logs-content {
+            background: #0f172a;
+            border-radius: 8px;
+            padding: 1rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.875rem;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .log-entry {
+            margin-bottom: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 4px;
+        }
+
+        .log-info {
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 3px solid #3b82f6;
+        }
+
+        .log-success {
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 3px solid #10b981;
+        }
+
+        .log-error {
+            background: rgba(239, 68, 68, 0.1);
+            border-left: 3px solid #ef4444;
+        }
+
+        .refresh-btn {
+            background: #10b981;
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.875rem;
+        }
+
+        .refresh-btn:hover {
+            background: #059669;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Field Elevate Trading Platform</h1>
+            <p class="subtitle">AI-Powered Trading with Adversarial Validation</p>
+        </header>
+
+        <div class="status-grid">
+            <div class="status-card">
+                <div class="status-header">
+                    <h3 class="status-title">MCP Hub</h3>
+                    <span class="status-badge" id="mcp-status">Checking...</span>
+                </div>
+                <div class="metrics">
+                    <div class="metric">
+                        <div class="metric-label">Port</div>
+                        <div class="metric-value">3001</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Version</div>
+                        <div class="metric-value" id="mcp-version">-</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="status-card">
+                <div class="status-header">
+                    <h3 class="status-title">Data Hub</h3>
+                    <span class="status-badge" id="data-status">Checking...</span>
+                </div>
+                <div class="metrics">
+                    <div class="metric">
+                        <div class="metric-label">Port</div>
+                        <div class="metric-value">3002</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Status</div>
+                        <div class="metric-value" id="data-info">-</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="status-card">
+                <div class="status-header">
+                    <h3 class="status-title">AI COO</h3>
+                    <span class="status-badge" id="ai-status">Checking...</span>
+                </div>
+                <div class="metrics">
+                    <div class="metric">
+                        <div class="metric-label">Port</div>
+                        <div class="metric-value">3003</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">API Key</div>
+                        <div class="metric-value" id="ai-api">-</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="status-card">
+                <div class="status-header">
+                    <h3 class="status-title">PostgreSQL</h3>
+                    <span class="status-badge" id="postgres-status">Checking...</span>
+                </div>
+                <div class="metrics">
+                    <div class="metric">
+                        <div class="metric-label">Port</div>
+                        <div class="metric-value">5433</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Database</div>
+                        <div class="metric-value">fieldelevate</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="status-card">
+                <div class="status-header">
+                    <h3 class="status-title">Redis</h3>
+                    <span class="status-badge" id="redis-status">Checking...</span>
+                </div>
+                <div class="metrics">
+                    <div class="metric">
+                        <div class="metric-label">Port</div>
+                        <div class="metric-value">6380</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Type</div>
+                        <div class="metric-value">Cache</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button class="btn btn-primary" onclick="checkAllServices()">Refresh Status</button>
+            <a href="http://localhost:3001" target="_blank" class="btn btn-secondary">Open MCP Hub</a>
+            <a href="http://localhost:3002" target="_blank" class="btn btn-secondary">Open Data Hub</a>
+            <a href="http://localhost:3003" target="_blank" class="btn btn-secondary">Open AI COO</a>
+        </div>
+
+        <div class="logs-section">
+            <div class="logs-header">
+                <h3>System Logs</h3>
+                <button class="refresh-btn" onclick="clearLogs()">Clear Logs</button>
+            </div>
+            <div class="logs-content" id="logs-content">
+                <div class="log-entry log-info">System initialized. Checking services...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function addLog(message, type = 'info') {
+            const logsContent = document.getElementById('logs-content');
+            const logEntry = document.createElement('div');
+            logEntry.className = `log-entry log-${type}`;
+            const timestamp = new Date().toLocaleTimeString();
+            logEntry.textContent = `[${timestamp}] ${message}`;
+            logsContent.appendChild(logEntry);
+            logsContent.scrollTop = logsContent.scrollHeight;
+        }
+
+        function clearLogs() {
+            document.getElementById('logs-content').innerHTML = '';
+            addLog('Logs cleared', 'info');
+        }
+
+        async function checkService(url, statusId, callback) {
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                document.getElementById(statusId).textContent = 'Online';
+                document.getElementById(statusId).className = 'status-badge status-online';
+                if (callback) callback(data);
+                return true;
+            } catch (error) {
+                document.getElementById(statusId).textContent = 'Offline';
+                document.getElementById(statusId).className = 'status-badge status-offline';
+                return false;
+            }
+        }
+
+        async function checkAllServices() {
+            addLog('Checking all services...', 'info');
+
+            // Check MCP Hub
+            const mcpOnline = await checkService('http://localhost:3001', 'mcp-status', (data) => {
+                document.getElementById('mcp-version').textContent = data.version || '-';
+                addLog(`MCP Hub online - Version ${data.version}`, 'success');
+                
+                // Check sub-services
+                if (data.services) {
+                    if (data.services.postgres === 'ready') {
+                        document.getElementById('postgres-status').textContent = 'Online';
+                        document.getElementById('postgres-status').className = 'status-badge status-online';
+                    }
+                    if (data.services.redis === 'ready') {
+                        document.getElementById('redis-status').textContent = 'Online';
+                        document.getElementById('redis-status').className = 'status-badge status-online';
+                    }
+                    document.getElementById('ai-api').textContent = 
+                        data.services.anthropic === 'ready' ? 'Configured' : 'Not Set';
+                }
+            });
+
+            if (!mcpOnline) {
+                addLog('MCP Hub is offline', 'error');
+            }
+
+            // Check Data Hub
+            const dataOnline = await checkService('http://localhost:3002', 'data-status', (data) => {
+                document.getElementById('data-info').textContent = 'Ready';
+                addLog('Data Hub online', 'success');
+            });
+
+            if (!dataOnline) {
+                addLog('Data Hub is offline', 'error');
+            }
+
+            // Check AI COO
+            const aiOnline = await checkService('http://localhost:3003', 'ai-status', (data) => {
+                addLog('AI COO online', 'success');
+            });
+
+            if (!aiOnline) {
+                addLog('AI COO is offline', 'error');
+            }
+
+            addLog('Service check complete', 'info');
+        }
+
+        // Check services on page load
+        window.onload = () => {
+            checkAllServices();
+            // Auto-refresh every 30 seconds
+            setInterval(checkAllServices, 30000);
+        };
+    </script>
+</body>
+</html> 
