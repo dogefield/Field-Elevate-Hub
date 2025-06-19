@@ -1,4 +1,36 @@
+databases:
+  # PostgreSQL Database
+  - name: fieldelevate-db
+    databaseName: fieldelevate
+    user: fieldelevate
+    plan: free
+
+  # Redis Instance
+  - name: fieldelevate-redis
+    type: redis
+    plan: free
+
 services:
+  # Main Application Server (includes frontend)
+  - type: web
+    name: fieldelevate-main
+    env: node
+    buildCommand: npm install && cd frontend && npm install && npm run build
+    startCommand: node server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: fieldelevate-db
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: fieldelevate-redis
+          property: connectionString
+      - fromGroup: field-elevate-shared
+    
   # MCP Hub - The main orchestrator
   - type: web
     name: fieldelevate-mcp-hub
@@ -8,6 +40,15 @@ services:
     envVars:
       - key: NODE_ENV
         value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: fieldelevate-db
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: fieldelevate-redis
+          property: connectionString
       - fromGroup: field-elevate-shared
     
   # Data Hub Service
@@ -19,6 +60,13 @@ services:
     envVars:
       - key: NODE_ENV
         value: production
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: fieldelevate-redis
+          property: connectionString
+      - key: MCP_HUB_URL
+        value: https://fieldelevate-mcp-hub.onrender.com
       - fromGroup: field-elevate-shared
 
   # AI COO Service
@@ -30,5 +78,12 @@ services:
     envVars:
       - key: NODE_ENV
         value: production
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: fieldelevate-redis
+          property: connectionString
+      - key: MCP_HUB_URL
+        value: https://fieldelevate-mcp-hub.onrender.com
       - fromGroup: field-elevate-shared
       
