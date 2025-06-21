@@ -1,0 +1,23 @@
+{
+  "name": "@field-elevate/risk-analyzer",
+  "version": "1.0.0",
+  "description": "Risk analysis and portfolio management for Field Elevate",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@fastify/cors": "^9.0.1",
+    "axios": "^1.6.7",
+    "dotenv": "^16.4.5",
+    "fastify": "^4.29.1",
+    "mathjs": "^12.3.0",
+    "redis": "^4.6.13"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.19",
+    "jest": "^29.7.0"
+  }
+}

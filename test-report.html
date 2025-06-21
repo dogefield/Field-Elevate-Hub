@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Field Elevate - Test Results</title>
+    <style>
+        body {
+            font-family: -apple-system, sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            padding: 40px;
+            text-align: center;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1 {
+            font-size: 3rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+        }
+        .summary {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 40px;
+            margin: 30px 0;
+        }
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 30px 0;
+        }
+        .stat {
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .passed { color: #22c55e; }
+        .failed { color: #ef4444; }
+        .links {
+            margin-top: 40px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            margin: 10px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+        .btn:hover {
+            opacity: 0.9;
+        }
+        .timestamp {
+            color: #666;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Field Elevate System</h1>
+        <h2>Test Results</h2>
+        
+        <div class="summary">
+            <div class="stats">
+                <div class="stat">
+                    <div class="stat-value">17</div>
+                    <div>Total Tests</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value passed">14</div>
+                    <div>Passed</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value failed">3</div>
+                    <div>Failed</div>
+                </div>
+            </div>
+            
+            <h3>System Status: ⚠️ Some Tests Failed</h3>
+        </div>
+        
+        <div class="links">
+            <h3>Access the System</h3>
+            <a href="service-status.html" class="btn">Live Service Status</a>
+            <a href="http://localhost:3000" class="btn">Grafana Dashboard</a>
+            <a href="http://localhost:8001" class="btn">Data Hub API</a>
+            <a href="http://localhost:8002" class="btn">AI COO API</a>
+        </div>
+        
+        <p class="timestamp">Generated: Fri Jun 20 13:12:30 EDT 2025</p>
+    </div>
+</body>
+</html>

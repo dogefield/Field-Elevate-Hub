@@ -1,0 +1,108 @@
+/* Field Elevate Hub - Main Styles */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  background-color: #0a0e27;
+  color: #ffffff;
+  line-height: 1.6;
+}
+
+.app {
+  min-height: 100vh;
+  padding: 20px;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 40px;
+  padding: 20px;
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+header h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+main {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+section {
+  background: #151a3a;
+  padding: 25px;
+  border-radius: 10px;
+  border: 1px solid #2a3f5f;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+section:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+section h2 {
+  color: #4a9eff;
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+  border-bottom: 2px solid #2a3f5f;
+  padding-bottom: 10px;
+}
+
+section ul {
+  list-style: none;
+}
+
+section li {
+  padding: 10px 0;
+  border-bottom: 1px solid #2a3f5f;
+  font-size: 1.1rem;
+}
+
+section li:last-child {
+  border-bottom: none;
+}
+
+/* Coming Soon sections */
+section p {
+  color: #7a8099;
+  font-style: italic;
+  text-align: center;
+  padding: 20px;
+}
+
+/* Loading state */
+p:contains("Loading") {
+  color: #4a9eff;
+  text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  
+  header h1 {
+    font-size: 2rem;
+  }
+} 

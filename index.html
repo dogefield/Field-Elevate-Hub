@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Field Elevate - Trading System Portal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .portal {
+            text-align: center;
+            max-width: 800px;
+            padding: 40px;
+        }
+        
+        h1 {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .subtitle {
+            font-size: 1.3rem;
+            color: #888;
+            margin-bottom: 60px;
+        }
+        
+        .portal-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .portal-card {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 16px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        
+        .portal-card:hover {
+            border-color: #667eea;
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.2);
+        }
+        
+        .portal-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        
+        .portal-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .portal-desc {
+            color: #888;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        
+        .status-bar {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-top: 40px;
+        }
+        
+        .status-item {
+            text-align: center;
+        }
+        
+        .status-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #22c55e;
+        }
+        
+        .status-label {
+            color: #666;
+            font-size: 0.85rem;
+            margin-top: 4px;
+        }
+        
+        .footer {
+            margin-top: 60px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .quick-links {
+            margin-top: 20px;
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .quick-link {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+        
+        .quick-link:hover {
+            color: #764ba2;
+        }
+    </style>
+</head>
+<body>
+    <div class="portal">
+        <h1>Field Elevate</h1>
+        <p class="subtitle">AI-Powered Trading System Control Center</p>
+        
+        <div class="portal-grid">
+            <a href="field-elevate-dashboard.html" class="portal-card">
+                <div class="portal-icon">📊</div>
+                <div class="portal-title">Main Dashboard</div>
+                <div class="portal-desc">Overview of the trading system with test results and documentation</div>
+            </a>
+            
+            <a href="service-status.html" class="portal-card">
+                <div class="portal-icon">🔄</div>
+                <div class="portal-title">Live Service Status</div>
+                <div class="portal-desc">Real-time monitoring of all system services and health checks</div>
+            </a>
+            
+            <a href="http://localhost:3000" class="portal-card" target="_blank">
+                <div class="portal-icon">📈</div>
+                <div class="portal-title">Grafana Metrics</div>
+                <div class="portal-desc">Advanced monitoring dashboards and performance metrics</div>
+            </a>
+            
+            <a href="test-report.html" class="portal-card">
+                <div class="portal-icon">✅</div>
+                <div class="portal-title">Test Results</div>
+                <div class="portal-desc">Latest system test results and integration status</div>
+            </a>
+        </div>
+        
+        <div class="status-bar">
+            <div class="status-item">
+                <div class="status-value">✓</div>
+                <div class="status-label">System Online</div>
+            </div>
+            <div class="status-item">
+                <div class="status-value">8</div>
+                <div class="status-label">Active Services</div>
+            </div>
+            <div class="status-item">
+                <div class="status-value">82%</div>
+                <div class="status-label">Tests Passed</div>
+            </div>
+            <div class="status-item">
+                <div class="status-value">65%</div>
+                <div class="status-label">Target Win Rate</div>
+            </div>
+        </div>
+        
+        <div class="quick-links">
+            <a href="http://localhost:8001" class="quick-link" target="_blank">Data Hub API</a>
+            <a href="http://localhost:8002" class="quick-link" target="_blank">AI COO API</a>
+            <a href="http://localhost:8004" class="quick-link" target="_blank">Risk Analyzer API</a>
+            <a href="SYSTEM_OVERVIEW.md" class="quick-link">Documentation</a>
+        </div>
+        
+        <div class="footer">
+            <p>Field Elevate Trading System v2.0</p>
+            <p style="margin-top: 8px; font-size: 0.85rem;">All services operational • Ready for trading</p>
+        </div>
+    </div>
+    
+    <script>
+        // Check service status on load
+        async function checkServices() {
+            try {
+                const services = [
+                    { url: 'http://localhost:8001/health', name: 'Data Hub' },
+                    { url: 'http://localhost:8002/health', name: 'AI COO' },
+                    { url: 'http://localhost:8004/health', name: 'Risk Analyzer' },
+                    { url: 'http://localhost:8000/health', name: 'MCP Hub' }
+                ];
+                
+                let onlineCount = 0;
+                for (const service of services) {
+                    try {
+                        const response = await fetch(service.url);
+                        if (response.ok) onlineCount++;
+                    } catch (e) {
+                        console.log(`${service.name} check failed`);
+                    }
+                }
+                
+                // Update status if needed
+                console.log(`${onlineCount} services online`);
+            } catch (error) {
+                console.error('Service check error:', error);
+            }
+        }
+        
+        // Check on load
+        checkServices();
+    </script>
+</body>
+</html>

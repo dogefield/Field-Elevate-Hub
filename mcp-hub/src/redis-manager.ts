@@ -118,6 +118,10 @@ export class RedisManager {
     return flattened;
   }
 
+  isConnected(): boolean {
+    return this.client.isReady;
+  }
+
   async disconnect() {
     await Promise.all([
       this.client.quit(),

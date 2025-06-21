@@ -3,23 +3,30 @@
   "version": "1.0.0",
   "description": "AI COO orchestration system for Field Elevate",
   "main": "dist/orchestrator.js",
+  "type": "module",
   "scripts": {
     "dev": "tsx watch src/orchestrator.ts",
     "build": "tsc",
-    "start": "node dist/orchestrator.js",
+    "start": "tsx src/orchestrator.ts",
     "test": "jest"
   },
   "dependencies": {
-    "openai": "^4.28.0",
-    "uuid": "^9.0.1",
+    "@anthropic-ai/sdk": "^0.20.0",
+    "@fastify/cors": "^9.0.1",
+    "axios": "^1.6.7",
+    "dotenv": "^16.4.5",
     "events": "^3.3.0",
-    "axios": "^1.6.7"
+    "fastify": "^4.26.2",
+    "node-fetch": "^3.3.2",
+    "openai": "^4.28.0",
+    "redis": "^4.6.13",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@types/node": "^20.11.19",
     "@types/uuid": "^9.0.8",
+    "jest": "^29.7.0",
     "tsx": "^4.7.1",
-    "typescript": "^5.3.3",
-    "jest": "^29.7.0"
+    "typescript": "^5.3.3"
   }
 }

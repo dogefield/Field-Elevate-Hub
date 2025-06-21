@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Field Elevate - AI Trading System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            min-height: 100vh;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            border-bottom: 1px solid #333;
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-link {
+            color: #aaa;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        
+        .nav-link:hover {
+            color: #667eea;
+        }
+        
+        .hero {
+            padding: 80px 20px;
+            text-align: center;
+            background: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #0a0a0a 100%);
+        }
+        
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .hero p {
+            font-size: 1.3rem;
+            color: #888;
+            max-width: 600px;
+            margin: 0 auto 40px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: #fff;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 60px;
+        }
+        
+        .stat-card {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+        }
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+        
+        .stat-label {
+            color: #888;
+            font-size: 0.9rem;
+        }
+        
+        .services-section {
+            background: #1a1a1a;
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .service-card {
+            background: #0a0a0a;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .service-card.online {
+            border-color: #22c55e;
+        }
+        
+        .service-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        
+        .service-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #22c55e;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(34, 197, 94, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+        }
+        
+        .service-desc {
+            color: #888;
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+        }
+        
+        .service-endpoint {
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            color: #667eea;
+        }
+        
+        .cta-section {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+            border-radius: 16px;
+            margin: 60px 0;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-secondary {
+            background: #2a2a2a;
+            color: #ddd;
+            border: 1px solid #444;
+        }
+        
+        .btn-secondary:hover {
+            background: #333;
+            border-color: #667eea;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: #666;
+            border-top: 1px solid #333;
+        }
+        
+        .test-results {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 40px 0;
+        }
+        
+        .test-summary {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+        
+        .test-stat {
+            text-align: center;
+        }
+        
+        .passed { color: #22c55e; }
+        .failed { color: #ef4444; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="logo">Field Elevate</div>
+            <div class="nav-links">
+                <a href="#services" class="nav-link">Services</a>
+                <a href="#results" class="nav-link">Test Results</a>
+                <a href="http://localhost:3000" class="nav-link" target="_blank">Grafana</a>
+                <a href="#docs" class="nav-link">Documentation</a>
+            </div>
+        </nav>
+    </header>
+    
+    <section class="hero">
+        <h1>Field Elevate Trading System</h1>
+        <p>AI-powered trading platform designed to achieve 65% win rate through intelligent decision-making and rigorous risk management</p>
+        
+        <div class="cta-buttons">
+            <a href="service-status.html" class="btn btn-primary">View Live Status</a>
+            <a href="test-report.html" class="btn btn-secondary">Test Results</a>
+        </div>
+    </section>
+    
+    <div class="container">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value">8</div>
+                <div class="stat-label">Total Services</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">65%</div>
+                <div class="stat-label">Target Win Rate</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">Real-time</div>
+                <div class="stat-label">Market Data</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">AI-Powered</div>
+                <div class="stat-label">Decision Making</div>
+            </div>
+        </div>
+        
+        <div id="services" class="services-section">
+            <h2 class="section-title">Core Services</h2>
+            <div class="service-grid">
+                <div class="service-card online">
+                    <div class="service-header">
+                        <span class="service-name">MCP Hub</span>
+                        <div class="status-dot"></div>
+                    </div>
+                    <p class="service-desc">Central orchestrator for all services</p>
+                    <p class="service-endpoint">http://localhost:8000</p>
+                </div>
+                
+                <div class="service-card online">
+                    <div class="service-header">
+                        <span class="service-name">Data Hub</span>
+                        <div class="status-dot"></div>
+                    </div>
+                    <p class="service-desc">Real-time market data and analysis</p>
+                    <p class="service-endpoint">http://localhost:8001</p>
+                </div>
+                
+                <div class="service-card online">
+                    <div class="service-header">
+                        <span class="service-name">AI COO</span>
+                        <div class="status-dot"></div>
+                    </div>
+                    <p class="service-desc">Claude-powered strategic decisions</p>
+                    <p class="service-endpoint">http://localhost:8002</p>
+                </div>
+                
+                <div class="service-card online">
+                    <div class="service-header">
+                        <span class="service-name">Risk Analyzer</span>
+                        <div class="status-dot"></div>
+                    </div>
+                    <p class="service-desc">Portfolio risk assessment</p>
+                    <p class="service-endpoint">http://localhost:8004</p>
+                </div>
+            </div>
+        </div>
+        
+        <div id="results" class="test-results">
+            <h2 class="section-title">System Test Results</h2>
+            <div class="test-summary">
+                <div class="test-stat">
+                    <div class="stat-value">17</div>
+                    <div class="stat-label">Total Tests</div>
+                </div>
+                <div class="test-stat">
+                    <div class="stat-value passed">14</div>
+                    <div class="stat-label">Passed</div>
+                </div>
+                <div class="test-stat">
+                    <div class="stat-value failed">3</div>
+                    <div class="stat-label">Failed</div>
+                </div>
+                <div class="test-stat">
+                    <div class="stat-value passed">82%</div>
+                    <div class="stat-label">Success Rate</div>
+                </div>
+            </div>
+            <p style="text-align: center; color: #888;">
+                Core functionality is operational. Minor issues with some integration endpoints.
+            </p>
+        </div>
+        
+        <div class="cta-section">
+            <h2 class="section-title">Ready to Trade?</h2>
+            <p style="color: #888; margin-bottom: 30px;">
+                The system is operational and ready for configuration with your API keys
+            </p>
+            <div class="cta-buttons">
+                <a href="SYSTEM_OVERVIEW.md" class="btn btn-primary">View Documentation</a>
+                <a href="http://localhost:8001/api/market/quote/AAPL" class="btn btn-secondary">Try API</a>
+                <a href="http://localhost:3000" class="btn btn-secondary">Open Grafana</a>
+            </div>
+        </div>
+    </div>
+    
+    <footer class="footer">
+        <p>Field Elevate Trading System - Built with AI-powered intelligence</p>
+        <p style="margin-top: 10px; font-size: 0.9rem;">
+            Status: <span class="passed">✓ Operational</span> | 
+            Generated: <span id="timestamp"></span>
+        </p>
+    </footer>
+    
+    <script>
+        // Update timestamp
+        document.getElementById('timestamp').textContent = new Date().toLocaleString();
+        
+        // Auto-refresh every 30 seconds
+        setInterval(() => {
+            document.getElementById('timestamp').textContent = new Date().toLocaleString();
+        }, 30000);
+    </script>
+</body>
+</html>

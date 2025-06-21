@@ -1,9 +1,3 @@
--- Create database if not exists
-CREATE DATABASE IF NOT EXISTS fieldelevate;
-
--- Use the database
-\c fieldelevate;
-
 -- Enable extensions
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE EXTENSION IF NOT EXISTS "timescaledb";
