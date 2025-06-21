@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "tsx watch src/orchestrator.ts",
     "build": "tsc",
-    "start": "tsx src/orchestrator.ts",
+    "start": "node dist/orchestrator.js",
     "test": "jest"
   },
   "dependencies": {

@@ -35,7 +35,7 @@ services:
   - type: web
     name: fieldelevate-mcp-hub
     env: node
-    buildCommand: cd mcp-hub && npm install
+    buildCommand: cd mcp-hub && npm install && npm run build
     startCommand: cd mcp-hub && npm start
     envVars:
       - key: NODE_ENV
@@ -49,6 +49,8 @@ services:
           type: redis
           name: fieldelevate-redis
           property: connectionString
+      - key: MCP_HUB_URL
+        value: https://fieldelevate-mcp-hub.onrender.com
       - fromGroup: field-elevate-shared
     
   # Data Hub Service
@@ -73,7 +75,7 @@ services:
   - type: web
     name: fieldelevate-ai-coo
     env: node
-    buildCommand: cd ai-coo && npm install
+    buildCommand: cd ai-coo && npm install && npm run build
     startCommand: cd ai-coo && npm start
     envVars:
       - key: NODE_ENV
