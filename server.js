@@ -25,6 +25,15 @@ if (!fs.existsSync(publicPath)) {
 
 app.use(express.static(publicPath));
 
+// Health check endpoint - IMPORTANT FOR RAILWAY!
+app.get('/health', (req, res) => {
+  res.status(200).json({ 
+    status: 'healthy',
+    timestamp: new Date().toISOString(),
+    port: PORT,
+    env: process.env.NODE_ENV || 'development'
+  });
+});
 
 // Database connection (Railway provides DATABASE_URL automatically when you add PostgreSQL)
 const sequelize = process.env.DATABASE_URL 
@@ -36,7 +45,13 @@ const sequelize = process.env.DATABASE_URL
           rejectUnauthorized: false
         }
       } : {},
-      logging: false
+      logging: false,
+      pool: {
+        max: 5,
+        min: 0,
+        acquire: 30000,
+        idle: 10000
+      }
     })
   : null;
 
@@ -115,7 +130,8 @@ const initDB = async () => {
       await sequelize.sync({ alter: true });
       console.log('✅ Database synchronized');
     } catch (error) {
-      console.error('❌ Database error:', error);
+      console.error('❌ Database error:', error.message);
+      // Don't exit - app can run without database
     }
   } else {
     console.log('⚠️  No database URL provided - running without database');
@@ -136,15 +152,6 @@ app.get('/', (req, res) => {
       marketData: '/api/market-data',
       signals: '/api/signals'
     }
-  });
-});
-
-app.get('/health', async (req, res) => {
-  const dbStatus = sequelize ? 'connected' : 'not configured';
-  res.json({ 
-    status: 'healthy',
-    database: dbStatus,
-    timestamp: new Date().toISOString()
   });
 });
 
@@ -305,12 +312,33 @@ app.get('*', (req, res) => {
   }
 });
 
+// Graceful shutdown handling
+process.on('SIGTERM', () => {
+  console.log('SIGTERM signal received: closing HTTP server');
+  server.close(() => {
+    console.log('HTTP server closed');
+    if (sequelize) {
+      sequelize.close().then(() => {
+        console.log('Database connection closed');
+        process.exit(0);
+      });
+    } else {
+      process.exit(0);
+    }
+  });
+});
+
 // Start server if run directly
 if (require.main === module) {
-  app.listen(PORT, async () => {
+  const server = app.listen(PORT, '0.0.0.0', async () => {
     console.log(`🚀 Field Elevate API running on port ${PORT}`);
+    console.log(`🌐 Environment: ${process.env.NODE_ENV || 'development'}`);
+    console.log(`💾 Database URL: ${process.env.DATABASE_URL ? 'Configured' : 'Not configured'}`);
     await initDB();
   });
+  
+  // Keep the server reference for graceful shutdown
+  module.exports.server = server;
 }
 
 module.exports = { app, initDB, sequelize };
