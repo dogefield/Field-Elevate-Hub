@@ -312,25 +312,10 @@ app.get('*', (req, res) => {
   }
 });
 
-// Graceful shutdown handling
-process.on('SIGTERM', () => {
-  console.log('SIGTERM signal received: closing HTTP server');
-  server.close(() => {
-    console.log('HTTP server closed');
-    if (sequelize) {
-      sequelize.close().then(() => {
-        console.log('Database connection closed');
-        process.exit(0);
-      });
-    } else {
-      process.exit(0);
-    }
-  });
-});
-
 // Start server if run directly
+let server;
 if (require.main === module) {
-  const server = app.listen(PORT, '0.0.0.0', async () => {
+  server = app.listen(PORT, '0.0.0.0', async () => {
     console.log(`🚀 Field Elevate API running on port ${PORT}`);
     console.log(`🌐 Environment: ${process.env.NODE_ENV || 'development'}`);
     console.log(`💾 Database URL: ${process.env.DATABASE_URL ? 'Configured' : 'Not configured'}`);
@@ -340,5 +325,26 @@ if (require.main === module) {
   // Keep the server reference for graceful shutdown
   module.exports.server = server;
 }
+
+// Graceful shutdown handling
+process.on('SIGTERM', () => {
+  console.log('SIGTERM signal received: closing HTTP server');
+  if (server) {
+    server.close(() => {
+      console.log('HTTP server closed');
+      if (sequelize) {
+        sequelize.close().then(() => {
+          console.log('Database connection closed');
+          process.exit(0);
+        });
+      } else {
+        process.exit(0);
+      }
+    });
+  } else {
+    console.log('No server to close');
+    process.exit(0);
+  }
+});
 
 module.exports = { app, initDB, sequelize };
