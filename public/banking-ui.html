@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Field Elevate Capital - Digital Asset Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #003d82;
+            --primary-light: #0056b3;
+            --secondary: #00a86b;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --dark: #1a1a1a;
+            --gray-100: #f8f9fa;
+            --gray-200: #e9ecef;
+            --gray-300: #dee2e6;
+            --gray-400: #ced4da;
+            --gray-500: #adb5bd;
+            --gray-600: #6c757d;
+            --gray-700: #495057;
+            --gray-800: #343a40;
+            --gray-900: #212529;
+            --white: #ffffff;
+            --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+            --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+        }
+
+        body {
+            font-family: var(--font-primary);
+            background: var(--gray-100);
+            color: var(--gray-900);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Professional Header */
+        .header {
+            background: var(--white);
+            border-bottom: 1px solid var(--gray-200);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 64px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .logo i {
+            font-size: 1.5rem;
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--gray-700);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--primary);
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .notification-btn {
+            position: relative;
+            background: none;
+            border: none;
+            color: var(--gray-600);
+            font-size: 1.25rem;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: var(--danger);
+            color: white;
+            font-size: 0.7rem;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Main Layout */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Account Summary Bar */
+        .account-summary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .account-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .account-stat {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .account-label {
+            font-size: 0.875rem;
+            opacity: 0.9;
+            font-weight: 500;
+        }
+
+        .account-value {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .account-change {
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .positive {
+            color: #4ade80;
+        }
+
+        .negative {
+            color: #f87171;
+        }
+
+        /* Cards Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: var(--white);
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow-sm);
+            transition: box-shadow 0.2s;
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--gray-800);
+        }
+
+        .card-icon {
+            color: var(--gray-400);
+            font-size: 1.25rem;
+        }
+
+        /* Market Table */
+        .market-table {
+            background: var(--white);
+            border-radius: 8px;
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+        }
+
+        .table-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--gray-800);
+        }
+
+        .table-controls {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-input {
+            padding: 0.5rem 1rem 0.5rem 2.5rem;
+            border: 1px solid var(--gray-300);
+            border-radius: 6px;
+            font-size: 0.875rem;
+            width: 250px;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-400);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: var(--gray-50);
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        th {
+            padding: 1rem 1.5rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: var(--gray-700);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        td {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--gray-100);
+            font-size: 0.9rem;
+        }
+
+        tr:hover {
+            background: var(--gray-50);
+        }
+
+        .asset-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .asset-logo {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+        }
+
+        .asset-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .asset-symbol {
+            font-weight: 600;
+            color: var(--gray-900);
+        }
+
+        .asset-name {
+            font-size: 0.8rem;
+            color: var(--gray-600);
+        }
+
+        .price-cell {
+            font-weight: 600;
+            font-family: 'Monaco', 'Courier New', monospace;
+        }
+
+        .change-cell {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-weight: 500;
+        }
+
+        .sparkline {
+            width: 100px;
+            height: 30px;
+        }
+
+        /* Action Buttons */
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-light);
+        }
+
+        .btn-secondary {
+            background: var(--gray-200);
+            color: var(--gray-700);
+        }
+
+        .btn-secondary:hover {
+            background: var(--gray-300);
+        }
+
+        .btn-success {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        /* Live Indicator */
+        .live-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.75rem;
+            color: var(--secondary);
+            font-weight: 500;
+        }
+
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--secondary);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(0, 168, 107, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(0, 168, 107, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(0, 168, 107, 0);
+            }
+        }
+
+        /* Chart Container */
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin-top: 1rem;
+        }
+
+        /* Professional Footer */
+        .footer {
+            background: var(--gray-800);
+            color: var(--gray-400);
+            padding: 2rem 0;
+            margin-top: 4rem;
+            font-size: 0.875rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            text-align: center;
+        }
+
+        /* WebSocket Status */
+        .ws-status {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--white);
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.875rem;
+        }
+
+        .ws-connected {
+            color: var(--secondary);
+        }
+
+        .ws-disconnected {
+            color: var(--danger);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-nav {
+                display: none;
+            }
+
+            .main-container {
+                padding: 1rem;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .search-input {
+                width: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Professional Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-university"></i>
+                Field Elevate Capital
+            </div>
+            <nav class="header-nav">
+                <a href="#" class="nav-link active">Dashboard</a>
+                <a href="#" class="nav-link">Portfolio</a>
+                <a href="#" class="nav-link">Trading</a>
+                <a href="#" class="nav-link">Analytics</a>
+                <a href="#" class="nav-link">Reports</a>
+            </nav>
+            <div class="user-menu">
+                <button class="notification-btn">
+                    <i class="far fa-bell"></i>
+                    <span class="notification-badge">3</span>
+                </button>
+                <button class="btn btn-primary">
+                    <i class="fas fa-user-circle"></i>
+                    Account
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-container">
+        <!-- Account Summary -->
+        <div class="account-summary">
+            <div class="account-info">
+                <div class="account-stat">
+                    <div class="account-label">Total Portfolio Value</div>
+                    <div class="account-value" id="portfolio-value">$0.00</div>
+                    <div class="account-change positive" id="portfolio-change">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>+0.00%</span>
+                    </div>
+                </div>
+                <div class="account-stat">
+                    <div class="account-label">24h Profit/Loss</div>
+                    <div class="account-value" id="daily-pnl">$0.00</div>
+                    <div class="account-change" id="daily-pnl-percent">0.00%</div>
+                </div>
+                <div class="account-stat">
+                    <div class="account-label">Available Balance</div>
+                    <div class="account-value" id="available-balance">$50,000.00</div>
+                    <div class="account-change">USD</div>
+                </div>
+                <div class="account-stat">
+                    <div class="account-label">Active Positions</div>
+                    <div class="account-value" id="active-positions">6</div>
+                    <div class="account-change">Cryptocurrencies</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="dashboard-grid">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Market Cap</h3>
+                    <i class="fas fa-chart-pie card-icon"></i>
+                </div>
+                <div class="card-value" style="font-size: 1.5rem; font-weight: 600;">$1.73T</div>
+                <div class="card-subtitle" style="color: var(--gray-600); font-size: 0.875rem;">Total Crypto Market</div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">24h Volume</h3>
+                    <i class="fas fa-exchange-alt card-icon"></i>
+                </div>
+                <div class="card-value" style="font-size: 1.5rem; font-weight: 600;">$89.4B</div>
+                <div class="card-subtitle" style="color: var(--gray-600); font-size: 0.875rem;">Global Trading Volume</div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">BTC Dominance</h3>
+                    <i class="fas fa-bitcoin card-icon" style="color: #f7931a;"></i>
+                </div>
+                <div class="card-value" style="font-size: 1.5rem; font-weight: 600;">52.3%</div>
+                <div class="card-subtitle" style="color: var(--gray-600); font-size: 0.875rem;">Market Share</div>
+            </div>
+        </div>
+
+        <!-- Market Overview Table -->
+        <div class="market-table">
+            <div class="table-header">
+                <h2 class="table-title">Live Market Prices</h2>
+                <div class="table-controls">
+                    <div class="live-indicator">
+                        <span class="live-dot"></span>
+                        Real-time data
+                    </div>
+                    <div class="search-box">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" class="search-input" placeholder="Search assets...">
+                    </div>
+                </div>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Asset</th>
+                        <th>Price</th>
+                        <th>24h Change</th>
+                        <th>Volume</th>
+                        <th>Market Cap</th>
+                        <th>7d Chart</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="market-table-body">
+                    <!-- Table rows will be populated by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Portfolio Performance Chart -->
+        <div class="card" style="margin-top: 2rem;">
+            <div class="card-header">
+                <h3 class="card-title">Portfolio Performance</h3>
+                <div class="btn-group">
+                    <button class="btn btn-secondary">1D</button>
+                    <button class="btn btn-secondary">1W</button>
+                    <button class="btn btn-primary">1M</button>
+                    <button class="btn btn-secondary">1Y</button>
+                </div>
+            </div>
+            <div class="chart-container">
+                <canvas id="portfolio-chart"></canvas>
+            </div>
+        </div>
+    </main>
+
+    <!-- WebSocket Status -->
+    <div class="ws-status" id="ws-status">
+        <i class="fas fa-circle" id="ws-icon"></i>
+        <span id="ws-text">Connecting to live data...</span>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2024 Field Elevate Capital. Professional Digital Asset Management.</p>
+            <p>Market data provided by CoinGecko and Coinbase. Prices may be delayed.</p>
+        </div>
+    </footer>
+
+    <script>
+        // WebSocket connection for live prices
+        let ws = null;
+        let reconnectInterval = null;
+        const marketData = new Map();
+
+        // Format number as currency
+        function formatCurrency(num) {
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }).format(num);
+        }
+
+        // Format large numbers
+        function formatLargeNumber(num) {
+            if (num >= 1e9) return (num / 1e9).toFixed(2) + 'B';
+            if (num >= 1e6) return (num / 1e6).toFixed(2) + 'M';
+            if (num >= 1e3) return (num / 1e3).toFixed(2) + 'K';
+            return num.toFixed(2);
+        }
+
+        // Update WebSocket status
+        function updateWSStatus(connected) {
+            const statusEl = document.getElementById('ws-status');
+            const iconEl = document.getElementById('ws-icon');
+            const textEl = document.getElementById('ws-text');
+            
+            if (connected) {
+                statusEl.classList.add('ws-connected');
+                statusEl.classList.remove('ws-disconnected');
+                iconEl.style.color = 'var(--secondary)';
+                textEl.textContent = 'Live data connected';
+            } else {
+                statusEl.classList.remove('ws-connected');
+                statusEl.classList.add('ws-disconnected');
+                iconEl.style.color = 'var(--danger)';
+                textEl.textContent = 'Reconnecting...';
+            }
+        }
+
+        // Connect to WebSocket
+        function connectWebSocket() {
+            ws = new WebSocket('wss://ws-feed.exchange.coinbase.com');
+
+            ws.onopen = () => {
+                console.log('WebSocket connected');
+                updateWSStatus(true);
+                
+                // Subscribe to price feeds
+                const subscribeMsg = {
+                    type: 'subscribe',
+                    product_ids: ['BTC-USD', 'ETH-USD', 'SOL-USD', 'AVAX-USD', 'MATIC-USD', 'LINK-USD'],
+                    channels: ['ticker']
+                };
+                ws.send(JSON.stringify(subscribeMsg));
+            };
+
+            ws.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                if (data.type === 'ticker') {
+                    updatePrice(data);
+                }
+            };
+
+            ws.onerror = (error) => {
+                console.error('WebSocket error:', error);
+                updateWSStatus(false);
+            };
+
+            ws.onclose = () => {
+                console.log('WebSocket disconnected');
+                updateWSStatus(false);
+                // Reconnect after 5 seconds
+                setTimeout(connectWebSocket, 5000);
+            };
+        }
+
+        // Update price from WebSocket
+        function updatePrice(ticker) {
+            const symbol = ticker.product_id.replace('-USD', '');
+            const priceElement = document.getElementById(`price-${symbol}`);
+            if (priceElement) {
+                const price = parseFloat(ticker.price);
+                priceElement.textContent = formatCurrency(price);
+                
+                // Flash effect on price change
+                priceElement.style.transition = 'background-color 0.3s';
+                priceElement.style.backgroundColor = price > parseFloat(priceElement.dataset.lastPrice || 0) ? 
+                    'rgba(0, 255, 0, 0.1)' : 'rgba(255, 0, 0, 0.1)';
+                setTimeout(() => {
+                    priceElement.style.backgroundColor = 'transparent';
+                }, 300);
+                
+                priceElement.dataset.lastPrice = price;
+            }
+        }
+
+        // Fetch market data from API
+        async function fetchMarketData() {
+            try {
+                const response = await fetch('/api/market-data');
+                const data = await response.json();
+                updateMarketTable(data.markets);
+                updatePortfolioStats(data.markets);
+            } catch (error) {
+                console.error('Error fetching market data:', error);
+            }
+        }
+
+        // Update market table
+        function updateMarketTable(markets) {
+            const tbody = document.getElementById('market-table-body');
+            tbody.innerHTML = '';
+
+            markets.forEach(market => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>
+                        <div class="asset-info">
+                            <img src="https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/32/color/${market.symbol.toLowerCase()}.png" 
+                                 alt="${market.symbol}" class="asset-logo" 
+                                 onerror="this.src='https://via.placeholder.com/32'">
+                            <div class="asset-details">
+                                <span class="asset-symbol">${market.symbol}</span>
+                                <span class="asset-name">${market.name || market.symbol}</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="price-cell" id="price-${market.symbol}" data-last-price="${market.price}">
+                        ${formatCurrency(market.price)}
+                    </td>
+                    <td class="change-cell ${market.change24h >= 0 ? 'positive' : 'negative'}">
+                        <i class="fas fa-arrow-${market.change24h >= 0 ? 'up' : 'down'}"></i>
+                        ${Math.abs(market.change24h).toFixed(2)}%
+                    </td>
+                    <td>$${formatLargeNumber(market.volume24h || 0)}</td>
+                    <td>$${formatLargeNumber(market.marketCap || 0)}</td>
+                    <td>
+                        <canvas class="sparkline" id="sparkline-${market.symbol}"></canvas>
+                    </td>
+                    <td>
+                        <button class="btn btn-success btn-sm">Buy</button>
+                        <button class="btn btn-danger btn-sm">Sell</button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+
+                // Draw sparkline if available
+                if (market.sparkline && market.sparkline.length > 0) {
+                    drawSparkline(`sparkline-${market.symbol}`, market.sparkline);
+                }
+            });
+        }
+
+        // Draw sparkline chart
+        function drawSparkline(canvasId, data) {
+            const canvas = document.getElementById(canvasId);
+            if (!canvas) return;
+
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+            
+            const min = Math.min(...data);
+            const max = Math.max(...data);
+            const range = max - min;
+            
+            ctx.strokeStyle = data[data.length - 1] > data[0] ? '#4ade80' : '#f87171';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            
+            data.forEach((value, index) => {
+                const x = (index / (data.length - 1)) * width;
+                const y = height - ((value - min) / range) * height;
+                
+                if (index === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            });
+            
+            ctx.stroke();
+        }
+
+        // Update portfolio statistics
+        function updatePortfolioStats(markets) {
+            // Calculate mock portfolio value based on market prices
+            const holdings = {
+                'BTC': 0.5,
+                'ETH': 5,
+                'SOL': 100,
+                'AVAX': 50,
+                'MATIC': 1000,
+                'LINK': 100
+            };
+
+            let totalValue = 50000; // Cash balance
+            let daily24h = 0;
+
+            markets.forEach(market => {
+                const holding = holdings[market.symbol];
+                if (holding) {
+                    const value = holding * market.price;
+                    totalValue += value;
+                    daily24h += value * (market.change24h / 100);
+                }
+            });
+
+            // Update UI
+            document.getElementById('portfolio-value').textContent = formatCurrency(totalValue);
+            document.getElementById('daily-pnl').textContent = formatCurrency(daily24h);
+            document.getElementById('daily-pnl-percent').textContent = (daily24h / totalValue * 100).toFixed(2) + '%';
+            
+            const changeEl = document.getElementById('portfolio-change');
+            if (daily24h >= 0) {
+                changeEl.classList.add('positive');
+                changeEl.classList.remove('negative');
+                changeEl.innerHTML = `<i class="fas fa-arrow-up"></i> <span>+${(daily24h / totalValue * 100).toFixed(2)}%</span>`;
+            } else {
+                changeEl.classList.add('negative');
+                changeEl.classList.remove('positive');
+                changeEl.innerHTML = `<i class="fas fa-arrow-down"></i> <span>${(daily24h / totalValue * 100).toFixed(2)}%</span>`;
+            }
+
+            // Update portfolio chart
+            updatePortfolioChart(totalValue);
+        }
+
+        // Portfolio Chart
+        let portfolioChart = null;
+        function updatePortfolioChart(currentValue) {
+            const ctx = document.getElementById('portfolio-chart').getContext('2d');
+            
+            if (!portfolioChart) {
+                portfolioChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: [],
+                        datasets: [{
+                            label: 'Portfolio Value',
+                            data: [],
+                            borderColor: '#003d82',
+                            backgroundColor: 'rgba(0, 61, 130, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            y: {
+                                ticks: {
+                                    callback: function(value) {
+                                        return formatCurrency(value);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Add new data point
+            const now = new Date();
+            portfolioChart.data.labels.push(now.toLocaleTimeString());
+            portfolioChart.data.datasets[0].data.push(currentValue);
+
+            // Keep only last 20 points
+            if (portfolioChart.data.labels.length > 20) {
+                portfolioChart.data.labels.shift();
+                portfolioChart.data.datasets[0].data.shift();
+            }
+
+            portfolioChart.update();
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            connectWebSocket();
+            fetchMarketData();
+            
+            // Refresh market data every 30 seconds
+            setInterval(fetchMarketData, 30000);
+        });
+    </script>
+</body>
+</html>

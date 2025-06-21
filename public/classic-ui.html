@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Field Elevate Hub - Redirecting...</title>
+    <meta http-equiv="refresh" content="0; url=/banking-ui.html">
+    <script>window.location.href = '/banking-ui.html';</script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #00ff88;
+            --secondary: #0088ff;
+            --danger: #ff0044;
+            --warning: #ffaa00;
+            --bg-primary: #0a0e1a;
+            --bg-secondary: #141b2d;
+            --bg-tertiary: #1a2235;
+            --text-primary: #ffffff;
+            --text-secondary: #a8b2d1;
+            --border-color: #2a3f5f;
+            --success: #00d68f;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 14, 26, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            padding: 1rem 2rem;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+
+        .nav-link:hover {
+            color: var(--primary);
+        }
+
+        /* Main Container */
+        .main-container {
+            margin-top: 80px;
+            padding: 2rem;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Card Styles */
+        .card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.2);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            color: var(--primary);
+        }
+
+        .card-value {
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 1rem 0;
+        }
+
+        .positive {
+            color: var(--success);
+        }
+
+        .negative {
+            color: var(--danger);
+        }
+
+        /* 3D Background */
+        #three-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        /* Charts */
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin-top: 1rem;
+        }
+
+        /* Trading Panel */
+        .trading-panel {
+            grid-column: span 2;
+            background: var(--bg-tertiary);
+            border: 2px solid var(--primary);
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+        }
+
+        .strategy-list {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .strategy-card {
+            background: var(--bg-secondary);
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .strategy-card:hover {
+            border-color: var(--primary);
+            transform: scale(1.05);
+        }
+
+        .strategy-name {
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .strategy-performance {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* AI Assistant */
+        .ai-assistant {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 60px;
+            height: 60px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.5);
+            transition: transform 0.3s;
+        }
+
+        .ai-assistant:hover {
+            transform: scale(1.1);
+        }
+
+        .ai-chat {
+            position: fixed;
+            bottom: 100px;
+            right: 2rem;
+            width: 350px;
+            height: 500px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            display: none;
+            flex-direction: column;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .chat-header {
+            padding: 1rem;
+            background: var(--bg-tertiary);
+            border-bottom: 1px solid var(--border-color);
+            border-radius: 12px 12px 0 0;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+        }
+
+        .chat-input {
+            padding: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .chat-input input {
+            width: 100%;
+            padding: 0.5rem;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            color: var(--text-primary);
+        }
+
+        /* Loading Animation */
+        .loader {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--bg-tertiary);
+            border-top: 3px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Pulse Animation */
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(0, 255, 136, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(0, 255, 136, 0);
+            }
+        }
+
+        /* Risk Indicator */
+        .risk-indicator {
+            width: 100%;
+            height: 10px;
+            background: var(--bg-primary);
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        .risk-level {
+            height: 100%;
+            transition: width 0.5s ease;
+        }
+
+        .risk-low { background: var(--success); }
+        .risk-medium { background: var(--warning); }
+        .risk-high { background: var(--danger); }
+
+        /* Status Indicators */
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-left: 0.5rem;
+        }
+
+        .status-online {
+            background: var(--success);
+            box-shadow: 0 0 10px var(--success);
+        }
+
+        .status-offline {
+            background: var(--danger);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .trading-panel {
+                grid-column: span 1;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+
+        /* Glassmorphism Effect */
+        .glass {
+            background: rgba(20, 27, 45, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Glow Effect */
+        .glow {
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+        }
+
+        /* Notification Badge */
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--danger);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <!-- Three.js Background -->
+    <div id="three-bg"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar glass">
+        <div class="nav-container">
+            <div class="logo">Field Elevate Hub</div>
+            <div class="nav-links">
+                <a class="nav-link" data-section="overview">Overview</a>
+                <a class="nav-link" data-section="strategies">Strategies</a>
+                <a class="nav-link" data-section="risk">Risk Analysis</a>
+                <a class="nav-link" data-section="portfolio">Portfolio</a>
+                <a class="nav-link" data-section="ai">AI Insights</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Dashboard -->
+    <div class="main-container">
+        <!-- Key Metrics -->
+        <div class="dashboard-grid" id="metrics-grid">
+            <div class="card glass">
+                <div class="card-header">
+                    <h3 class="card-title">Portfolio Value</h3>
+                    <span class="status-indicator status-online pulse"></span>
+                </div>
+                <div class="card-value positive">$1,247,892</div>
+                <small class="positive">+12.5% (24h)</small>
+                <div class="chart-container">
+                    <canvas id="portfolio-chart"></canvas>
+                </div>
+            </div>
+
+            <div class="card glass">
+                <div class="card-header">
+                    <h3 class="card-title">Active Strategies</h3>
+                    <span class="notification-badge">3</span>
+                </div>
+                <div class="card-value">17</div>
+                <small>5 Momentum | 7 Mean Reversion | 5 Arbitrage</small>
+                <div class="strategy-list">
+                    <div class="strategy-card">
+                        <div class="strategy-name">BTC Momentum Alpha</div>
+                        <div class="strategy-performance positive">+18.2%</div>
+                    </div>
+                    <div class="strategy-card">
+                        <div class="strategy-name">ETH Mean Reversion</div>
+                        <div class="strategy-performance positive">+7.8%</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card glass">
+                <div class="card-header">
+                    <h3 class="card-title">Risk Metrics</h3>
+                    <span class="status-indicator status-online"></span>
+                </div>
+                <div class="card-value">VaR: $47,230</div>
+                <small>95% Confidence</small>
+                <div class="risk-indicator">
+                    <div class="risk-level risk-medium" style="width: 45%"></div>
+                </div>
+                <small style="margin-top: 0.5rem; display: block;">Sharpe Ratio: 2.41</small>
+            </div>
+
+            <div class="card glass">
+                <div class="card-header">
+                    <h3 class="card-title">AI COO Status</h3>
+                    <span class="status-indicator status-online pulse"></span>
+                </div>
+                <div class="card-value">Analyzing...</div>
+                <small>Processing 1,847 signals/min</small>
+                <div style="margin-top: 1rem;">
+                    <div class="loader"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trading Panel -->
+        <div class="card trading-panel">
+            <div class="card-header">
+                <h3 class="card-title">Live Trading Activity</h3>
+                <button id="emergency-stop" style="background: var(--danger); color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer;">
+                    EMERGENCY STOP
+                </button>
+            </div>
+            <div class="chart-container" style="height: 400px;">
+                <canvas id="trading-chart"></canvas>
+            </div>
+        </div>
+
+        <!-- Market Overview -->
+        <div class="dashboard-grid" style="margin-top: 2rem;">
+            <div class="card glass">
+                <div class="card-header">
+                    <h3 class="card-title">Market Signals</h3>
+                </div>
+                <div id="signals-container">
+                    <!-- Signals will be populated here -->
+                </div>
+            </div>
+
+            <div class="card glass">
+                <div class="card-header">
+                    <h3 class="card-title">System Health</h3>
+                </div>
+                <div id="system-health">
+                    <!-- System health indicators -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Assistant Chat -->
+    <div class="ai-assistant">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="white">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+        </svg>
+    </div>
+
+    <div class="ai-chat glass" id="ai-chat">
+        <div class="chat-header">
+            <h3>Bot Concierge</h3>
+        </div>
+        <div class="chat-messages" id="chat-messages">
+            <div style="padding: 0.5rem; background: var(--bg-primary); border-radius: 8px; margin-bottom: 0.5rem;">
+                Hello! I'm your AI trading assistant. How can I help you today?
+            </div>
+        </div>
+        <div class="chat-input">
+            <input type="text" placeholder="Ask me anything..." id="chat-input">
+        </div>
+    </div>
+
+    <script>
+        // Initialize GSAP
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Three.js Background
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.getElementById('three-bg').appendChild(renderer.domElement);
+
+        // Create particle system
+        const particles = new THREE.BufferGeometry();
+        const particleCount = 1000;
+        const posArray = new Float32Array(particleCount * 3);
+
+        for(let i = 0; i < particleCount * 3; i++) {
+            posArray[i] = (Math.random() - 0.5) * 10;
+        }
+
+        particles.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+        const particleMaterial = new THREE.PointsMaterial({
+            size: 0.005,
+            color: '#00ff88'
+        });
+
+        const particleMesh = new THREE.Points(particles, particleMaterial);
+        scene.add(particleMesh);
+        camera.position.z = 3;
+
+        // Animate particles
+        function animateParticles() {
+            requestAnimationFrame(animateParticles);
+            particleMesh.rotation.x += 0.0005;
+            particleMesh.rotation.y += 0.0005;
+            renderer.render(scene, camera);
+        }
+        animateParticles();
+
+        // GSAP Animations
+        gsap.from(".card", {
+            duration: 1,
+            y: 50,
+            opacity: 0,
+            stagger: 0.1,
+            ease: "power3.out"
+        });
+
+        gsap.from(".navbar", {
+            duration: 1,
+            y: -100,
+            opacity: 0,
+            ease: "power3.out"
+        });
+
+        // Hover animations for cards
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                gsap.to(card, {
+                    scale: 1.02,
+                    duration: 0.3,
+                    ease: "power2.out"
+                });
+            });
+
+            card.addEventListener('mouseleave', () => {
+                gsap.to(card, {
+                    scale: 1,
+                    duration: 0.3,
+                    ease: "power2.out"
+                });
+            });
+        });
+
+        // Portfolio Chart
+        const portfolioCtx = document.getElementById('portfolio-chart').getContext('2d');
+        const portfolioChart = new Chart(portfolioCtx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Portfolio Value',
+                    data: [980000, 1020000, 1080000, 1150000, 1180000, 1247892],
+                    borderColor: '#00ff88',
+                    backgroundColor: 'rgba(0, 255, 136, 0.1)',
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        },
+                        ticks: {
+                            color: '#a8b2d1'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        },
+                        ticks: {
+                            color: '#a8b2d1'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Trading Activity Chart
+        const tradingCtx = document.getElementById('trading-chart').getContext('2d');
+        const tradingChart = new Chart(tradingCtx, {
+            type: 'bar',
+            data: {
+                labels: ['BTC', 'ETH', 'SOL', 'AVAX', 'MATIC', 'LINK'],
+                datasets: [{
+                    label: 'Buy Volume',
+                    data: [65, 59, 80, 81, 56, 55],
+                    backgroundColor: '#00ff88'
+                }, {
+                    label: 'Sell Volume',
+                    data: [28, 48, 40, 19, 86, 27],
+                    backgroundColor: '#ff0044'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        },
+                        ticks: {
+                            color: '#a8b2d1'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        },
+                        ticks: {
+                            color: '#a8b2d1'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Simulate real-time updates
+        setInterval(() => {
+            // Update portfolio value
+            const portfolioValue = document.querySelector('.card-value.positive');
+            const currentValue = parseFloat(portfolioValue.textContent.replace(/[$,]/g, ''));
+            const change = (Math.random() - 0.5) * 10000;
+            const newValue = currentValue + change;
+            
+            gsap.to(portfolioValue, {
+                duration: 0.5,
+                textContent: `$${newValue.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`,
+                onUpdate: function() {
+                    portfolioValue.textContent = `$${Math.floor(this.targets()[0].textContent.replace(/[$,]/g, '')).toLocaleString()}`;
+                }
+            });
+
+            // Update charts
+            const newDataPoint = portfolioChart.data.datasets[0].data[portfolioChart.data.datasets[0].data.length - 1] + (Math.random() - 0.5) * 5000;
+            portfolioChart.data.datasets[0].data.push(newDataPoint);
+            if (portfolioChart.data.datasets[0].data.length > 10) {
+                portfolioChart.data.datasets[0].data.shift();
+            }
+            portfolioChart.update();
+
+            // Add market signals
+            addMarketSignal();
+            
+            // Update system health
+            updateSystemHealth();
+        }, 3000);
+
+        // Market Signals
+        function addMarketSignal() {
+            const signals = [
+                { asset: 'BTC', type: 'BUY', confidence: 87, reason: 'RSI oversold + Support bounce' },
+                { asset: 'ETH', type: 'SELL', confidence: 72, reason: 'Resistance rejection' },
+                { asset: 'SOL', type: 'BUY', confidence: 91, reason: 'Breakout confirmed' },
+                { asset: 'AVAX', type: 'HOLD', confidence: 65, reason: 'Consolidation phase' }
+            ];
+
+            const signal = signals[Math.floor(Math.random() * signals.length)];
+            const signalsContainer = document.getElementById('signals-container');
+            
+            const signalElement = document.createElement('div');
+            signalElement.style.cssText = `
+                padding: 0.5rem;
+                margin: 0.5rem 0;
+                background: ${signal.type === 'BUY' ? 'rgba(0, 255, 136, 0.1)' : signal.type === 'SELL' ? 'rgba(255, 0, 68, 0.1)' : 'rgba(255, 170, 0, 0.1)'};
+                border-left: 3px solid ${signal.type === 'BUY' ? '#00ff88' : signal.type === 'SELL' ? '#ff0044' : '#ffaa00'};
+                border-radius: 4px;
+            `;
+            
+            signalElement.innerHTML = `
+                <strong>${signal.asset}</strong> - ${signal.type} (${signal.confidence}% confidence)<br>
+                <small>${signal.reason}</small>
+            `;
+            
+            signalsContainer.insertBefore(signalElement, signalsContainer.firstChild);
+            
+            if (signalsContainer.children.length > 5) {
+                signalsContainer.removeChild(signalsContainer.lastChild);
+            }
+            
+            gsap.from(signalElement, {
+                duration: 0.5,
+                x: -50,
+                opacity: 0,
+                ease: "power2.out"
+            });
+        }
+
+        // System Health
+        function updateSystemHealth() {
+            const services = [
+                { name: 'Data Hub', status: 'online', latency: Math.floor(Math.random() * 50) + 10 },
+                { name: 'Signal Forge', status: 'online', latency: Math.floor(Math.random() * 30) + 5 },
+                { name: 'Trade Runner', status: 'online', latency: Math.floor(Math.random() * 20) + 3 },
+                { name: 'Risk Analyzer', status: 'online', latency: Math.floor(Math.random() * 40) + 8 },
+                { name: 'AI COO', status: 'online', latency: Math.floor(Math.random() * 60) + 15 }
+            ];
+
+            const healthContainer = document.getElementById('system-health');
+            healthContainer.innerHTML = '';
+
+            services.forEach(service => {
+                const serviceElement = document.createElement('div');
+                serviceElement.style.cssText = `
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 0.5rem;
+                    margin: 0.5rem 0;
+                    background: rgba(0, 255, 136, 0.05);
+                    border-radius: 4px;
+                `;
+                
+                serviceElement.innerHTML = `
+                    <span>${service.name}</span>
+                    <div style="display: flex; align-items: center;">
+                        <small style="color: #a8b2d1; margin-right: 0.5rem;">${service.latency}ms</small>
+                        <span class="status-indicator status-${service.status}"></span>
+                    </div>
+                `;
+                
+                healthContainer.appendChild(serviceElement);
+            });
+        }
+
+        // AI Assistant
+        const aiAssistant = document.querySelector('.ai-assistant');
+        const aiChat = document.getElementById('ai-chat');
+        const chatInput = document.getElementById('chat-input');
+        const chatMessages = document.getElementById('chat-messages');
+
+        aiAssistant.addEventListener('click', () => {
+            aiChat.style.display = aiChat.style.display === 'flex' ? 'none' : 'flex';
+            gsap.from(aiChat, {
+                duration: 0.3,
+                scale: 0.8,
+                opacity: 0,
+                ease: "back.out(1.7)"
+            });
+        });
+
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && e.target.value.trim()) {
+                const message = e.target.value;
+                addChatMessage('user', message);
+                e.target.value = '';
+                
+                // Generate intelligent AI response
+                setTimeout(() => {
+                    const response = getBotResponse(message);
+                    addChatMessage('ai', response);
+                }, 800);
+            }
+        });
+
+        function addChatMessage(sender, message) {
+            const messageElement = document.createElement('div');
+            messageElement.style.cssText = `
+                padding: 0.5rem;
+                margin-bottom: 0.5rem;
+                border-radius: 8px;
+                background: ${sender === 'user' ? 'var(--bg-tertiary)' : 'var(--bg-primary)'};
+                ${sender === 'user' ? 'margin-left: 20%;' : 'margin-right: 20%;'}
+                white-space: pre-wrap;
+                word-wrap: break-word;
+            `;
+            messageElement.textContent = message;
+            chatMessages.appendChild(messageElement);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            gsap.from(messageElement, {
+                duration: 0.3,
+                y: 20,
+                opacity: 0,
+                ease: "power2.out"
+            });
+        }
+
+        // Emergency Stop
+        document.getElementById('emergency-stop').addEventListener('click', function() {
+            if (confirm('Are you sure you want to execute EMERGENCY STOP? This will halt all trading activities.')) {
+                this.textContent = 'STOPPING...';
+                this.disabled = true;
+                
+                gsap.to('.card', {
+                    duration: 0.5,
+                    opacity: 0.5,
+                    filter: 'grayscale(100%)'
+                });
+                
+                setTimeout(() => {
+                    this.textContent = 'TRADING HALTED';
+                    this.style.background = '#666';
+                    alert('All trading activities have been halted. System is now in safe mode.');
+                }, 2000);
+            }
+        });
+
+        // Navigation
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const section = e.target.dataset.section;
+                
+                // Remove active class from all links
+                document.querySelectorAll('.nav-link').forEach(l => l.style.color = 'var(--text-secondary)');
+                e.target.style.color = 'var(--primary)';
+                
+                // Show alert for now (will be replaced with actual sections)
+                const sectionInfo = {
+                    'overview': 'Portfolio overview and key metrics',
+                    'strategies': 'Active trading strategies and performance',
+                    'risk': 'Risk analysis and VaR calculations',
+                    'portfolio': 'Detailed portfolio positions and allocations',
+                    'ai': 'AI insights and market predictions'
+                };
+                
+                alert(`${section.toUpperCase()} Section\n\n${sectionInfo[section]}\n\nThis section is coming soon!`);
+            });
+        });
+
+        // Initialize
+        updateSystemHealth();
+        for(let i = 0; i < 3; i++) {
+            addMarketSignal();
+        }
+
+        // Window resize handler
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // Performance optimization - reduce animations on low-end devices
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            gsap.globalTimeline.timeScale(0);
+        }
+    </script>
+</body>
+</html>

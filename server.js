@@ -258,16 +258,57 @@ app.get('/api/positions', async (req, res) => {
   ]);
 });
 
-// Market data endpoint
+// Initialize real data services
+const CoinbaseWebSocket = require('./src/services/coinbase-websocket');
+const coingeckoService = require('./src/services/coingecko-service');
+
+// Start Coinbase WebSocket
+const coinbaseWS = new CoinbaseWebSocket();
+coinbaseWS.connect();
+
+// Market data endpoint with real data
 app.get('/api/market-data', async (req, res) => {
-  res.json({
-    lastUpdate: new Date().toISOString(),
-    markets: [
-      { symbol: 'BTC-USD', price: 43250.00, change24h: 2.5 },
-      { symbol: 'ETH-USD', price: 2340.00, change24h: 3.2 },
-      { symbol: 'SPY', price: 475.50, change24h: 0.8 }
-    ]
-  });
+  try {
+    // Get CoinGecko data
+    const coingeckoData = await coingeckoService.getCoinData();
+    
+    // Get live Coinbase prices
+    const liveprices = coinbaseWS.getCurrentPrices();
+    
+    // Merge data sources
+    const markets = coingeckoData.map(coin => {
+      const coinbaseKey = `${coin.symbol}-USD`;
+      const liveData = liveprices[coinbaseKey];
+      
+      return {
+        symbol: coin.symbol,
+        name: coin.name,
+        price: liveData ? liveData.price : coin.price,
+        change24h: liveData ? liveData.change24h : coin.change24h,
+        volume24h: coin.volume24h,
+        marketCap: coin.marketCap,
+        sparkline: coin.sparkline,
+        isLive: !!liveData
+      };
+    });
+    
+    res.json({
+      lastUpdate: new Date().toISOString(),
+      markets,
+      source: 'CoinGecko + Coinbase'
+    });
+  } catch (error) {
+    // Fallback to mock data if APIs fail
+    res.json({
+      lastUpdate: new Date().toISOString(),
+      markets: [
+        { symbol: 'BTC', price: 43250.00, change24h: 2.5 },
+        { symbol: 'ETH', price: 2340.00, change24h: 3.2 },
+        { symbol: 'SOL', price: 98.50, change24h: 5.1 }
+      ],
+      source: 'mock'
+    });
+  }
 });
 
 // Trading signals endpoint
