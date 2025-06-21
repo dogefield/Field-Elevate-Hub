@@ -9,6 +9,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="/api-config.js"></script>
+    <script src="/bot-intelligence.js"></script>
     <style>
         * {
             margin: 0;
@@ -796,17 +797,11 @@
                 addChatMessage('user', message);
                 e.target.value = '';
                 
-                // Simulate AI response
+                // Generate intelligent AI response
                 setTimeout(() => {
-                    const responses = [
-                        "Based on current market conditions, I recommend increasing exposure to BTC momentum strategies.",
-                        "Risk levels are within acceptable parameters. All systems operating normally.",
-                        "I've identified 3 new arbitrage opportunities in the ETH/USDT pair.",
-                        "Portfolio optimization complete. Expected Sharpe ratio improvement: +0.15"
-                    ];
-                    
-                    addChatMessage('ai', responses[Math.floor(Math.random() * responses.length)]);
-                }, 1000);
+                    const response = getBotResponse(message);
+                    addChatMessage('ai', response);
+                }, 800);
             }
         });
 
@@ -818,6 +813,8 @@
                 border-radius: 8px;
                 background: ${sender === 'user' ? 'var(--bg-tertiary)' : 'var(--bg-primary)'};
                 ${sender === 'user' ? 'margin-left: 20%;' : 'margin-right: 20%;'}
+                white-space: pre-wrap;
+                word-wrap: break-word;
             `;
             messageElement.textContent = message;
             chatMessages.appendChild(messageElement);
@@ -854,9 +851,23 @@
         // Navigation
         document.querySelectorAll('.nav-link').forEach(link => {
             link.addEventListener('click', (e) => {
+                e.preventDefault();
                 const section = e.target.dataset.section;
-                // Here you would typically scroll to or display the relevant section
-                console.log(`Navigating to ${section}`);
+                
+                // Remove active class from all links
+                document.querySelectorAll('.nav-link').forEach(l => l.style.color = 'var(--text-secondary)');
+                e.target.style.color = 'var(--primary)';
+                
+                // Show alert for now (will be replaced with actual sections)
+                const sectionInfo = {
+                    'overview': 'Portfolio overview and key metrics',
+                    'strategies': 'Active trading strategies and performance',
+                    'risk': 'Risk analysis and VaR calculations',
+                    'portfolio': 'Detailed portfolio positions and allocations',
+                    'ai': 'AI insights and market predictions'
+                };
+                
+                alert(`${section.toUpperCase()} Section\n\n${sectionInfo[section]}\n\nThis section is coming soon!`);
             });
         });
 
