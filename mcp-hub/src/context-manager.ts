@@ -108,7 +108,7 @@ export class ContextManager {
       active_strategies: strategyContext.active_strategies || [],
       strategy_rankings: strategyContext.rankings || [],
       risk_metrics: riskContext,
-      recent_trades: trades.map(t => ({
+      recent_trades: trades.map((t: any) => ({
         id: t.id,
         ...this.parseStreamMessage(t.message)
       })),

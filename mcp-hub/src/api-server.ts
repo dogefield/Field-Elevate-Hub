@@ -1,3 +1,4 @@
+/// <reference types="node" />
 import Fastify from 'fastify';
 import cors from '@fastify/cors';
 import { RedisManager } from './redis-manager.js';

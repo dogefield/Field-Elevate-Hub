@@ -1,3 +1,4 @@
+/// <reference types="node" />
 import { RedisManager } from './redis-manager.js';
 import { logger } from './utils/logger.js';
 import axios from 'axios';

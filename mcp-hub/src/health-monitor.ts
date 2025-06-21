@@ -1,10 +1,11 @@
+/// <reference types="node" />
 import { RedisManager } from './redis-manager.js';
 import { AppRegistry } from './app-registry.js';
 import { logger } from './utils/logger.js';
 import * as promClient from 'prom-client';
 
 export class HealthMonitor {
-  private checkInterval: NodeJS.Timer | null = null;
+  private checkInterval: ReturnType<typeof setInterval> | null = null;
   private metrics: {
     appHealth: promClient.Gauge;
     apiLatency: promClient.Histogram;

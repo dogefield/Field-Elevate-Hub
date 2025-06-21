@@ -1,10 +1,11 @@
+/// <reference types="node" />
 import { createClient, RedisClientType } from 'redis';
 import { logger } from './utils/logger.js';
 
 export class RedisManager {
-  private client: RedisClientType;
-  private subscriber: RedisClientType;
-  private publisher: RedisClientType;
+  private client: ReturnType<typeof createClient>;
+  private subscriber: ReturnType<typeof createClient>;
+  private publisher: ReturnType<typeof createClient>;
 
   constructor() {
     const redisUrl = process.env.REDIS_URL || 'redis://localhost:6379';
@@ -14,9 +15,9 @@ export class RedisManager {
     this.publisher = this.client.duplicate();
 
     // Error handling
-    this.client.on('error', (err) => logger.error('Redis Client Error', err));
-    this.subscriber.on('error', (err) => logger.error('Redis Subscriber Error', err));
-    this.publisher.on('error', (err) => logger.error('Redis Publisher Error', err));
+    this.client.on('error', (err: any) => logger.error('Redis Client Error', err));
+    this.subscriber.on('error', (err: any) => logger.error('Redis Subscriber Error', err));
+    this.publisher.on('error', (err: any) => logger.error('Redis Publisher Error', err));
   }
 
   async connect() {
@@ -88,7 +89,7 @@ export class RedisManager {
     const hash = await this.client.hGetAll(key);
     const result: any = {};
     for (const [field, value] of Object.entries(hash)) {
-      result[field] = JSON.parse(value);
+      result[field] = JSON.parse(value as string);
     }
     return result;
   }
