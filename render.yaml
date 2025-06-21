@@ -15,7 +15,7 @@ services:
   - type: web
     name: fieldelevate-main
     env: node
-    buildCommand: npm install && cd frontend && npm install && npm run build
+    buildCommand: npm install
     startCommand: node server.js
     envVars:
       - key: NODE_ENV

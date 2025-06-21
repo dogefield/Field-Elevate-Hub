@@ -14,18 +14,16 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-// Serve React frontend
-const buildPath = path.join(__dirname, 'frontend', 'build');
-const indexHtml = path.join(buildPath, 'index.html');
+// Serve static files from public directory
+const publicPath = path.join(__dirname, 'public');
+const indexHtml = path.join(publicPath, 'index.html');
 
-if (!fs.existsSync(indexHtml)) {
-  console.warn(
-    '⚠️  Frontend build not found. Run "npm install && cd frontend && npm install && npm run build" to generate the React bundle. ' +
-    'If this appears in Railway logs, make sure the build command is correctly configured.'
-  );
+// Create public directory if it doesn't exist
+if (!fs.existsSync(publicPath)) {
+  fs.mkdirSync(publicPath, { recursive: true });
 }
 
-app.use(express.static(buildPath));
+app.use(express.static(publicPath));
 
 
 // Database connection (Railway provides DATABASE_URL automatically when you add PostgreSQL)
@@ -298,12 +296,12 @@ app.all('/api/*', (req, res) => {
   res.json({ error: 'Coming Soon' });
 });
 
-// Catch-all to serve React UI
+// Catch-all to serve the main UI
 app.get('*', (req, res) => {
   if (fs.existsSync(indexHtml)) {
     res.sendFile(indexHtml);
   } else {
-    res.status(404).send('Frontend build missing. Please run "cd frontend && npm install && npm run build".');
+    res.status(404).send('Frontend not found. Please check the public directory.');
   }
 });
 

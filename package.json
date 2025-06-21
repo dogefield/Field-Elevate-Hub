@@ -13,8 +13,7 @@
     "test:performance": "jest tests/performance",
     "test:e2e": "jest tests/e2e",
     "test:all": "node run-all-tests.js",
-    "test:watch": "jest --watch",
-    "heroku-postbuild": "cd frontend && npm install && npm run build"
+    "test:watch": "jest --watch"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
