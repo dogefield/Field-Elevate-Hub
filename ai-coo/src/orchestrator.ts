@@ -95,7 +95,7 @@ fastify.get('/', async (request, reply) => {
 
 // Analyze market conditions
 fastify.post('/api/analyze', async (request, reply) => {
-  const { symbols, timeframe = '1Day' } = request.body;
+  const { symbols, timeframe = '1Day' } = request.body as any;
   
   try {
     // Fetch market data
@@ -126,7 +126,7 @@ fastify.post('/api/analyze', async (request, reply) => {
     );
     
     return analysis;
-  } catch (error) {
+  } catch (error: any) {
     console.error('Analysis error:', error);
     return reply.code(500).send({ error: error.message });
   }
@@ -134,11 +134,11 @@ fastify.post('/api/analyze', async (request, reply) => {
 
 // Make trading decision
 fastify.post('/api/decision', async (request, reply) => {
-  const { opportunity, context } = request.body;
+  const { opportunity, context } = request.body as any;
   
   try {
     // Validate opportunity with risk analyzer
-    const riskCheck = await validateWithRisk(opportunity);
+    const riskCheck: any = await validateWithRisk(opportunity);
     
     if (!riskCheck.approved) {
       return {
@@ -155,7 +155,7 @@ fastify.post('/api/decision', async (request, reply) => {
     await logDecision(decision);
     
     return decision;
-  } catch (error) {
+  } catch (error: any) {
     console.error('Decision error:', error);
     return reply.code(500).send({ error: error.message });
   }
@@ -163,7 +163,7 @@ fastify.post('/api/decision', async (request, reply) => {
 
 // Generate trading strategy
 fastify.post('/api/strategy', async (request, reply) => {
-  const { goals, constraints, timeHorizon } = request.body;
+  const { goals, constraints, timeHorizon } = request.body as any;
   
   try {
     // Get comprehensive market overview
@@ -185,7 +185,7 @@ fastify.post('/api/strategy', async (request, reply) => {
       validation,
       confidence: calculateConfidence(strategy, validation)
     };
-  } catch (error) {
+  } catch (error: any) {
     console.error('Strategy error:', error);
     return reply.code(500).send({ error: error.message });
   }
@@ -207,14 +207,14 @@ fastify.get('/api/insights', async (request, reply) => {
     });
     
     return insights;
-  } catch (error) {
+  } catch (error: any) {
     console.error('Insights error:', error);
     return reply.code(500).send({ error: error.message });
   }
 });
 
 // Helper functions
-async function fetchMarketData(symbols) {
+async function fetchMarketData(symbols: string[]) {
   try {
     const response = await fetch(`${services.dataHub}/api/market/snapshot`, {
       method: 'POST',
@@ -248,7 +248,7 @@ async function fetchRiskMetrics() {
   }
 }
 
-async function getAIAnalysis(context, analysisType) {
+async function getAIAnalysis(context: any, analysisType: string) {
   const prompt = `Analyze the following market data and provide ${analysisType}:
 
 Context: ${JSON.stringify(context, null, 2)}
@@ -289,7 +289,7 @@ Format your response as JSON.`;
   }
 }
 
-async function getAIDecision(opportunity, context) {
+async function getAIDecision(opportunity: any, context: any) {
   const prompt = `Evaluate this trading opportunity and make a decision:
 
 Opportunity: ${JSON.stringify(opportunity, null, 2)}
@@ -332,7 +332,7 @@ Respond with a JSON decision including:
   }
 }
 
-async function validateWithRisk(opportunity) {
+async function validateWithRisk(opportunity: any) {
   try {
     const response = await fetch(`${services.riskAnalyzer}/api/risk/evaluate`, {
       method: 'POST',
@@ -346,7 +346,7 @@ async function validateWithRisk(opportunity) {
   }
 }
 
-async function logDecision(decision) {
+async function logDecision(decision: any) {
   const key = `decision:${Date.now()}`;
   await redis.setEx(key, 86400 * 30, JSON.stringify({
     ...decision,
@@ -360,7 +360,7 @@ async function logDecision(decision) {
   });
 }
 
-async function generateStrategy(params) {
+async function generateStrategy(params: any) {
   const prompt = `Generate a comprehensive trading strategy based on:
 
 Goals: ${JSON.stringify(params.goals)}
@@ -419,7 +419,7 @@ async function getMarketOverview() {
   };
 }
 
-async function validateStrategy(strategy) {
+async function validateStrategy(strategy: any) {
   // Mock validation - in production, this would be more sophisticated
   return {
     feasible: true,
@@ -429,7 +429,7 @@ async function validateStrategy(strategy) {
   };
 }
 
-function calculateConfidence(strategy, validation) {
+function calculateConfidence(strategy: any, validation: any) {
   // Simple confidence calculation
   let confidence = validation.score;
   
@@ -473,7 +473,7 @@ async function getMarketConditions() {
   }
 }
 
-async function generateInsights(data) {
+async function generateInsights(data: any) {
   const prompt = `Generate actionable insights from:
 
 Recent Trades: ${JSON.stringify(data.recentTrades, null, 2)}

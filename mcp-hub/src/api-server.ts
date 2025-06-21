@@ -58,27 +58,36 @@ fastify.get('/', async (request, reply) => {
 
 // Service registry endpoints
 fastify.get('/api/services', async (request, reply) => {
-  const services = await appRegistry.getRegisteredApps();
-  const health = await healthMonitor.getSystemHealth();
+  const services = appRegistry.getAllApps();
+  const systemHealth = await healthMonitor.getSystemHealth();
   
   return {
-    services: Object.entries(services).map(([name, info]) => ({
-      name,
-      ...info,
-      health: health[name] || { status: 'unknown' }
+    systemHealth,
+    services: services.map((app) => ({
+      ...app,
+      health: { status: app.status }
     }))
   };
 });
 
 fastify.post('/api/services/register', async (request, reply) => {
-  const { name, url, capabilities } = request.body as any;
+  const { id, name, url, capabilities, type = 'external' } = request.body as any;
   
-  if (!name || !url) {
-    return reply.code(400).send({ error: 'name and url required' });
+  if (!id || !name || !url) {
+    return reply.code(400).send({ error: 'id, name and url required' });
   }
   
-  await appRegistry.registerApp(name, { url, capabilities });
-  return { status: 'registered', name, url };
+  await appRegistry.registerApp({
+    id,
+    name,
+    url,
+    type,
+    capabilities: capabilities || [],
+    status: 'offline',
+    lastSeen: new Date(),
+    version: '1.0.0'
+  });
+  return { status: 'registered', id, name, url };
 });
 
 // Context management

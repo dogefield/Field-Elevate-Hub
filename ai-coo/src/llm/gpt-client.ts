@@ -1,5 +1,5 @@
 import OpenAI from 'openai';
-import { logger } from '../../mcp-hub/src/utils/logger';
+import { logger } from '../utils/logger.js';
 
 export interface GPTConfig {
   model: string;

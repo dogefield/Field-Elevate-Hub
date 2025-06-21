@@ -1,4 +1,4 @@
-import { logger } from '../../mcp-hub/src/utils/logger';
+import { logger } from '../utils/logger.js';
 
 export interface ReasoningContext {
   thought: any;

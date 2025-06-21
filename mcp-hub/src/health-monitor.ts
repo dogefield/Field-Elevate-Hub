@@ -67,7 +67,7 @@ export class HealthMonitor {
 
   async stop() {
     if (this.checkInterval) {
-      clearInterval(this.checkInterval);
+      clearInterval(this.checkInterval as any);
     }
   }
 
